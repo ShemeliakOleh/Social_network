@@ -1,0 +1,15 @@
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\bin\Debug\Social_network.exe.config
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\bin\Debug\Social_network.exe
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\bin\Debug\Social_network.pdb
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Social_network.csprojAssemblyReference.cache
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\MainWindow.g.cs
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\App.g.cs
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Social_network_MarkupCompile.cache
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Social_network_MarkupCompile.lref
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\MainWindow.baml
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Social_network.g.resources
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Social_network.Properties.Resources.resources
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Social_network.csproj.GenerateResource.cache
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Social_network.csproj.CoreCompileInputs.cache
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Social_network.exe
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Social_network.pdb
