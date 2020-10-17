@@ -12,6 +12,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
+using Social_network.Controller;
+using Social_network.Models;
+using Social_network.Views;
 
 namespace Social_network
 {
@@ -23,6 +29,14 @@ namespace Social_network
         public MainWindow()
         {
             InitializeComponent();
+            
+        }
+
+        private void SingIn_Click(object sender, RoutedEventArgs e)
+        {
+
+            SocialDb.LoginUser(tBoxEmail.Text.ToString(),tBoxPassword.Text.ToString(), this);
+
         }
     }
 }
