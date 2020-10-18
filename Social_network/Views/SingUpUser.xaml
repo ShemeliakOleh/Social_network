@@ -12,6 +12,7 @@
             <ColumnDefinition Width="1.5*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.4*"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -19,20 +20,21 @@
             <RowDefinition Height="3*"></RowDefinition>
             <RowDefinition Height="0.9*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Введіть ім'я: " FontSize="20"></TextBlock>
-        <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Введіть Прізвище: " FontSize="20"></TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Введіть e-mail: " FontSize="20"></TextBlock>
-        <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Введіть пароль: " FontSize="20"></TextBlock>
-        <TextBlock Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,10,0" Text="Введіть список інтересів (Розділяючи символом ',')" TextWrapping="Wrap" FontSize="20" Width="140"></TextBlock>
-        <TextBox x:Name="tBoxRegFName" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="30" FontSize="18" ></TextBox>
-        <TextBox x:Name="tBoxRegSName" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="30" FontSize="18" ></TextBox>
-        <TextBox x:Name="tBoxRegEmail" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="30" FontSize="18" ></TextBox>
-        <TextBox x:Name="tBoxRegPass" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="30" FontSize="18" ></TextBox>
-        <TextBox x:Name="tBoxRegInterets" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="260" Height="160" FontSize="14" TextWrapping="Wrap" ></TextBox>
-        <StackPanel Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal">
+        <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Введіть ім'я: " FontSize="20"></TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Введіть Прізвище: " FontSize="20"></TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Введіть e-mail: " FontSize="20"></TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Введіть пароль: " FontSize="20"></TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,10,0" Text="Введіть список інтересів (Розділяючи символом ',')" TextWrapping="Wrap" FontSize="20" Width="140"></TextBlock>
+        <TextBox x:Name="tBoxRegFName" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="30" FontSize="18" ></TextBox>
+        <TextBox x:Name="tBoxRegSName" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="30" FontSize="18" ></TextBox>
+        <TextBox x:Name="tBoxRegEmail" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="30" FontSize="18" ></TextBox>
+        <TextBox x:Name="tBoxRegPass" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="30" FontSize="18" ></TextBox>
+        <TextBox x:Name="tBoxRegInterets" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="260" Height="160" FontSize="14" TextWrapping="Wrap" ></TextBox>
+        <StackPanel Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Button x:Name="bRegister" Width="200" Height="35" Margin="30,0,0,0" Content="Зареєструватися" FontSize="22" Click="bRegister_Click"></Button>
             <Button x:Name="bCancel" Width="110" Height="35" Content="Скасувати" Margin="100,0,0,0" FontSize="22" Click="bCancel_Click"></Button>
         </StackPanel>
+        <TextBlock x:Name="tBlockMessage" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"></TextBlock>
         
     </Grid>
 </Window>

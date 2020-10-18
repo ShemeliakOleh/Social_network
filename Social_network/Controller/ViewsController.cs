@@ -42,5 +42,15 @@ namespace Social_network.Controller
             loginWindow.Owner = singUpUser;
             loginWindow.Close();
         }
+
+        internal static void ShowLoginUser(SingUpUser singUpUser, string email, string password)
+        {
+            MainWindow loginWindow = new MainWindow();
+            loginWindow.Show();
+            loginWindow.tBoxEmail.Text = email;
+            loginWindow.tBoxPassword.Text = password;
+            singUpUser.Owner = loginWindow;
+            singUpUser.Close();
+        }
     }
 }
