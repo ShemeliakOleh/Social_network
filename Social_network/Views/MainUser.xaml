@@ -17,6 +17,6 @@
             <RowDefinition Height="15*"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="UserName" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="8" VerticalAlignment="Center" FontSize="25">Oleh</TextBlock>
+        <TextBlock x:Name="UserName" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="8" VerticalAlignment="Center" FontSize="25"></TextBlock>
     </Grid>
 </Window>

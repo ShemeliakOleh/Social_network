@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using Social_network.Models;
+﻿using Social_network.Controller;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,19 +16,23 @@ using System.Windows.Shapes;
 namespace Social_network.Views
 {
     /// <summary>
-    /// Interaction logic for MainUser.xaml
+    /// Interaction logic for SingUpUser.xaml
     /// </summary>
-    public partial class MainUser : Window
+    public partial class SingUpUser : Window
     {
-        BsonObjectId userId;
-        public MainUser(BsonObjectId userId, User user)
+        public SingUpUser()
         {
             InitializeComponent();
-            this.userId = userId;
-            UserName.Text = user.FirstName;
+        }
+
+        private void bRegister_Click(object sender, RoutedEventArgs e)
+        {
 
         }
 
-       
+        private void bCancel_Click(object sender, RoutedEventArgs e)
+        {
+            ViewsController.CancelRegistration(this);
+        }
     }
 }

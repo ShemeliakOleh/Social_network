@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:Social_network"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="550" MinHeight="370" MinWidth="400">
-    <Grid ShowGridLines="True">
+    <Grid ShowGridLines="False">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition Width="2.5*"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.3*"></RowDefinition>
+            <RowDefinition Height="0.7*"></RowDefinition>
             <RowDefinition Height="1.5*"></RowDefinition>
             <RowDefinition Height="1.5*" ></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -25,6 +25,7 @@
         <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Height="45" Width="200" FontSize="24" Margin="12"  TextAlignment="Center" Text="Введіть password"></TextBlock>
         <TextBox x:Name="tBoxPassword" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="19" FontWeight="Light" Height="30" Width="250" Margin="20" TextAlignment="Center" ></TextBox>
         <Button x:Name="SingIn" Grid.Column="1" Grid.Row="3" Height="40" Width="150" Content="Увійти" FontSize="30" Click="SingIn_Click"></Button>
-        <Button x:Name="SingUp" Grid.Column="1" Grid.Row="4" Height="38" Width="200" Content="Зареєструватися" FontSize="24"></Button>
+        <Button x:Name="SingUp" Grid.Column="1" Grid.Row="4" Height="38" Width="200" Content="Зареєструватися" FontSize="24" Click="SingUp_Click"></Button>
+        <TextBlock x:Name="tBlockIncorrectLogin" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Foreground="DarkRed" Text="Incorrect e-mail or password!" Visibility="Hidden"></TextBlock>
     </Grid>
 </Window>

@@ -35,8 +35,13 @@ namespace Social_network
         private void SingIn_Click(object sender, RoutedEventArgs e)
         {
 
-            SocialDb.LoginUser(tBoxEmail.Text.ToString(),tBoxPassword.Text.ToString(), this);
+            SocialDbController.LoginUser(tBoxEmail.Text.ToString(),tBoxPassword.Text.ToString(), this);
 
+        }
+
+        private void SingUp_Click(object sender, RoutedEventArgs e)
+        {
+            ViewsController.ShowSingUpUser(this);
         }
     }
 }

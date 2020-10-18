@@ -11,6 +11,7 @@ namespace Social_network.Models
 {
    public class User
     {
+        
         [BsonElement("firstName")]
         public string FirstName { get; set; }
         [BsonElement("secondName")]
