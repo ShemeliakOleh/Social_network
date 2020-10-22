@@ -18,5 +18,21 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock x:Name="UserName" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="8" VerticalAlignment="Center" FontSize="25"></TextBlock>
+        <ScrollViewer Grid.Row="1" Grid.Column="1">
+            <StackPanel >
+                
+                <StackPanel Orientation="Vertical">
+                    <TextBlock>First_Name Second_Name</TextBlock>
+                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="500" TextWrapping="Wrap">Но активно развивающиеся страны третьего мира функционально разнесены на независимые элементы. Современные технологии достигли такого уровня, что внедрение современных методик предопределяет высокую востребованность модели развития. Ясность нашей позиции очевидна: выбранный нами инновационный путь позволяет выполнить важные задания по разработке своевременного выполнения сверхзадачи. Непосредственные участники технического прогресса указаны как претенденты на роль ключевых факторов. Каждый из нас понимает очевидную вещь: высококачественный прототип будущего проекта в значительной степени обусловливает важность новых предложений. Внезапно, активно развивающиеся страны третьего мира, инициированные исключительно синтетически, призваны к ответу. Безусловно, социально-экономическое развитие однозначно фиксирует необходимость первоочередных требований.
+                    </TextBlock>
+                    <Grid>
+                        <Label HorizontalAlignment="Left">Like</Label>
+                        <Label HorizontalAlignment="Center" Visibility="Hidden">More</Label>
+                        <Label HorizontalAlignment="Right">Comment</Label>
+                    </Grid>
+                    
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>
