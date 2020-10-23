@@ -12,16 +12,16 @@ namespace Social_network.Models
    public class Comment
     {
         [BsonElement("user")]
-        public BsonObjectId[] User { get; set; }
+        public BsonObjectId User { get; set; }
 
         [BsonElement("post")]
-        public BsonObjectId[] Post { get; set; }
+        public List<BsonObjectId> Post { get; set; }
 
         [BsonElement("commentContent")]
         public string CommentContent { get; set; }
 
         [BsonElement("likers")]
-        public BsonObjectId[] Likers { get; set; }
+        public List<BsonObjectId> Likers { get; set; }
 
     }
 }

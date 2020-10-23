@@ -12,14 +12,14 @@ namespace Social_network.Models
    public class Post
     {
         [BsonElement("user")]
-        public BsonObjectId[] User { get; set; }
+        public BsonObjectId User { get; set; }
 
         [BsonElement("comments")]
-        public string[] Comments { get; set; }
+        public List<BsonObjectId> Comments { get; set; }
 
         [BsonElement("postsContent")]
         public string PostsContent { get; set; }
         [BsonElement("likers")]
-        public BsonObjectId[] Likers { get; set; }
+        public List<BsonObjectId> Likers { get; set; }
     }
 }

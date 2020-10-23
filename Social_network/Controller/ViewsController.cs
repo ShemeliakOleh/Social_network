@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
@@ -17,7 +19,6 @@ namespace Social_network.Controller
         {
             loginWindow.tBlockIncorrectLogin.Visibility = System.Windows.Visibility.Visible;
             MainUser mainUser = new MainUser(userId,user);
-            
             mainUser.Show();
             loginWindow.Owner = mainUser;
             loginWindow.Close();
@@ -51,6 +52,25 @@ namespace Social_network.Controller
             loginWindow.tBoxPassword.Text = password;
             singUpUser.Owner = loginWindow;
             singUpUser.Close();
+        }
+
+        internal static void ShowScrollContent(MainUser mainUser, BsonObjectId userId, List<Post> posts, List<string> headPosts)
+        {
+            mainUser.mainStackContent.Children.RemoveRange(1, mainUser.mainStackContent.Children.Count-1);
+            for (int i =0; i < posts.Count; i++)
+            {
+                
+                StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Vertical};
+                stackPanel.Children.Add(new TextBlock() {Text = headPosts[i]});
+                stackPanel.Children.Add(new TextBlock() {TextWrapping = System.Windows.TextWrapping.Wrap, Margin= new System.Windows.Thickness(0,5,0,0), MaxHeight = 120, Width = 500 , Text = posts[i].PostsContent});
+                Grid grid = new Grid();
+                grid.Children.Add(new Button() {HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Like" });
+                grid.Children.Add(new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "More" });
+                grid.Children.Add(new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Comment" });
+                stackPanel.Children.Add(grid);
+                
+                mainUser.mainStackContent.Children.Add(stackPanel);
+            }
         }
     }
 }

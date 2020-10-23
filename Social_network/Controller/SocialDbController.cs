@@ -19,20 +19,9 @@ namespace Social_network.Controller
     {
         public static async void LoginUser(string email, string password, MainWindow loginWindow)
         {
-            var collection = GetCollection("users");
+            
             var filter = new BsonDocument("$and", new BsonArray { new BsonDocument("email",email), new BsonDocument("password", password) });
-            List<BsonDocument> userCursor = new List<BsonDocument>();
-            using (var cursor = await collection.FindAsync(filter))
-            {
-                while (await cursor.MoveNextAsync())
-                {
-                    var users = cursor.Current;
-                    foreach (var doc in users)
-                    {
-                        userCursor.Add(doc);
-                    }
-                }
-            }
+            List<BsonDocument> userCursor = await GetDocumentsList(filter,"users");
             if (userCursor.Count > 0)
             {
                 var userBson = userCursor[0];
@@ -53,6 +42,90 @@ namespace Social_network.Controller
 
         }
 
+        internal static async void CreateNewPost(MainUser mainUser, BsonObjectId userId)
+        {
+            if (mainUser.newPostTextBox.Text.Length > 0)
+            {
+                Post post = new Post() { User = userId, PostsContent = mainUser.newPostTextBox.Text, Comments = new List<BsonObjectId>(), Likers=new List<BsonObjectId>()};
+                var collection = GetCollection("posts");
+                await collection.InsertOneAsync(post.ToBsonDocument());
+                UpdateScrollContent(mainUser, userId);
+            }
+
+           
+
+        }
+
+        private static async Task<List<BsonDocument>> GetDocumentsList ( FilterDefinition<BsonDocument> filter, string CollectionsName)
+        {
+            var collection = GetCollection("users");
+            List<BsonDocument> userCursor = new List<BsonDocument>();
+            using (var cursor = await collection.FindAsync(filter))
+            {
+                while (await cursor.MoveNextAsync())
+                {
+                    var users = cursor.Current;
+                    foreach (var doc in users)
+                    {
+                        userCursor.Add(doc);
+                    }
+                }
+            }
+            return userCursor;
+
+        }
+        private static async Task<List<BsonDocument>> GetDocumentsList(string CollectionsName)
+        {
+
+            var collection = GetCollection("users");
+            List<BsonDocument> userCursor = new List<BsonDocument>();
+            using (var cursor = await collection.FindAsync(new BsonDocument()))
+            {
+                while (await cursor.MoveNextAsync())
+                {
+                    var users = cursor.Current;
+                    foreach (var doc in users)
+                    {
+                        userCursor.Add(doc);
+                    }
+                }
+            }
+            return userCursor;
+
+        }
+        private static async Task<List<BsonDocument>> SortCollectionById(string collectionName)
+        {
+
+            var collection = GetCollection(collectionName);
+
+            var sortedCollection = await collection.Find(new BsonDocument()).Sort("{_id:1}").Limit(15).ToListAsync();
+            return sortedCollection;
+        }
+        internal static async void UpdateScrollContent(MainUser mainUser, BsonObjectId userId)
+        {
+
+            var documentsList =await SortCollectionById("posts");
+            List<string> headPosts = new List<string>();
+            List<Post> posts = new List<Post>();
+           
+            for (int i =0; i< documentsList.Count; i++)
+            {
+                
+              var filter = Builders<BsonDocument>.Filter.Eq("_id",documentsList[i]["user"]);
+            
+                List<BsonDocument> userCursor = new List<BsonDocument>();
+                var User = await GetDocumentsList(filter,"users");
+                headPosts.Add(User[0]["firstName"].ToString() + " " + User[0]["secondName"].ToString());
+                documentsList[i].Remove("_id");
+                posts.Add(BsonSerializer.Deserialize<Post>(documentsList[i]));
+            }
+            
+
+
+
+            ViewsController.ShowScrollContent(mainUser,userId,posts,headPosts);
+        }
+
         internal static async void RegisterUser(SingUpUser singUpUser)
         {
             string message = "";
@@ -61,6 +134,7 @@ namespace Social_network.Controller
                 
                 message = "First name must be more than one character";
                 
+
             }
             if (!(singUpUser.tBoxRegSName.Text.Length > 1))
             {
@@ -87,21 +161,12 @@ namespace Social_network.Controller
                     Password = singUpUser.tBoxRegPass.Text
                 };
 
-                user.Interests = singUpUser.tBoxRegInterets.Text.Split(',');
+                user.Interests = new List<string>(singUpUser.tBoxRegInterets.Text.Split(','));
+                    
                 var filter = new BsonDocument(new BsonDocument("email", user.Email));
-                var collection = GetCollection("users");
-                List<BsonDocument> userCursor = new List<BsonDocument>();
-                using (var cursor = await collection.FindAsync(filter))
-                {
-                    while (await cursor.MoveNextAsync())
-                    {
-                        var users = cursor.Current;
-                        foreach (var doc in users)
-                        {
-                            userCursor.Add(doc);
-                        }
-                    }
-                }
+                
+                List<BsonDocument> userCursor = await GetDocumentsList(filter, "users");
+                
                 if (userCursor.Count > 0)
                 {
 
@@ -109,6 +174,7 @@ namespace Social_network.Controller
                 }
                 else
                 {
+                    var collection = GetCollection("users");
                     await collection.InsertOneAsync(user.ToBsonDocument());
                     ViewsController.ShowLoginUser(singUpUser, user.Email,user.Password);
                 }

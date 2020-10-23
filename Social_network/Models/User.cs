@@ -21,15 +21,15 @@ namespace Social_network.Models
         [BsonElement("email")]
         public string Email { get; set; }
         [BsonElement("interests")]
-        public string[] Interests { get; set; }
+        public List<string> Interests { get; set; }
         [BsonElement("following")]
-        public BsonObjectId[] Following { get; set; }
+        public List<BsonObjectId> Following { get; set; }
         [BsonElement("followers")]
-        public BsonObjectId[] Followers { get; set; }
+        public List<BsonObjectId> Followers { get; set; }
         [BsonElement("posts")]
-        public BsonObjectId[] Posts { get; set; }
+        public List<BsonObjectId> Posts { get; set; }
         [BsonElement("comments")]
-        public BsonObjectId[] Comments { get; set; }
+        public List<BsonObjectId> Comments { get; set; }
 
     }
 }

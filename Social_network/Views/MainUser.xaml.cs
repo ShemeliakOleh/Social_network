@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using Social_network.Controller;
 using Social_network.Models;
 using System;
 using System.Collections.Generic;
@@ -27,9 +28,26 @@ namespace Social_network.Views
             InitializeComponent();
             this.userId = userId;
             UserName.Text = user.FirstName;
+            SocialDbController.UpdateScrollContent(this,userId);
+            
+
+
+
+            //stackContent.Children.Add();
+
+
+
+
+
+
+
+
 
         }
 
-       
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SocialDbController.CreateNewPost(this,userId);
+        }
     }
 }
