@@ -12,6 +12,9 @@ namespace Social_network.Models
    public class User
     {
         
+        [BsonIgnoreIfDefault]
+        [BsonId]
+        public ObjectId Id { get; set; }
         [BsonElement("firstName")]
         public string FirstName { get; set; }
         [BsonElement("secondName")]
@@ -30,6 +33,19 @@ namespace Social_network.Models
         public List<BsonObjectId> Posts { get; set; }
         [BsonElement("comments")]
         public List<BsonObjectId> Comments { get; set; }
+        public User()
+        {
+            Id = ObjectId.GenerateNewId();
+            FirstName = "";
+            SecondName = "";
+            Password = "";
+            Email = "";
+            Interests = new List<string>();
+            Following = new List<BsonObjectId>();
+            Followers = new List<BsonObjectId>();
+            Posts = new List<BsonObjectId>();
+            Comments = new List<BsonObjectId>();
+        }
 
     }
 }

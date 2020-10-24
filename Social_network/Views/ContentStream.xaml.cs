@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using Social_network.Controller;
+﻿using Social_network.Controller;
 using Social_network.Models;
 using System;
 using System.Collections.Generic;
@@ -13,40 +12,27 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Social_network.Views
 {
     /// <summary>
-    /// Interaction logic for MainUser.xaml
+    /// Interaction logic for ContentStream.xaml
     /// </summary>
-    public partial class MainUser : Window
+    public partial class ContentStream : Page
     {
         public User User { get; set; }
-        public MainUser(User user)
+        public ContentStream(User user)
         {
-            InitializeComponent();
             this.User = user;
-            UserName.Text = user.FirstName;
-            mainPage.Navigate(new ContentStream(User));
-
-
-            
-
-
-
-            //stackContent.Children.Add();
-
-
-
-
-
-
-
-
-
+            InitializeComponent();
+            SocialDbController.UpdateScrollContent(this);
         }
 
-        
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SocialDbController.CreateNewPost(this);
+        }
     }
 }

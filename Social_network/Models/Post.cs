@@ -11,6 +11,9 @@ namespace Social_network.Models
 {
    public class Post
     {
+        [BsonIgnoreIfDefault]
+        [BsonId]
+        public ObjectId Id { get; set; }
         [BsonElement("user")]
         public BsonObjectId User { get; set; }
 
@@ -21,5 +24,13 @@ namespace Social_network.Models
         public string PostsContent { get; set; }
         [BsonElement("likers")]
         public List<BsonObjectId> Likers { get; set; }
+        public Post()
+        {
+            Id = ObjectId.GenerateNewId();
+            User = ObjectId.Empty;
+            Comments = new List<BsonObjectId>();
+            PostsContent = "";
+            Likers = new List<BsonObjectId>();
+        }
     }
 }

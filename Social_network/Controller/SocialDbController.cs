@@ -25,13 +25,8 @@ namespace Social_network.Controller
             if (userCursor.Count > 0)
             {
                 var userBson = userCursor[0];
-                BsonValue userId = userBson["_id"];
-                
-                    userBson.Remove("_id");
-                    var user = BsonSerializer.Deserialize<User>(userBson);
-
-
-                ViewsController.ShowMainUser(user,loginWindow, userId.AsObjectId);
+                var user = BsonSerializer.Deserialize<User>(userBson);
+                ViewsController.ShowMainUser(user,loginWindow);
 
 
             }
@@ -42,15 +37,22 @@ namespace Social_network.Controller
 
         }
 
-        internal static async void CreateNewPost(MainUser mainUser, BsonObjectId userId)
+        internal static async void CreateNewPost(ContentStream contentStream)
+
         {
-            if (mainUser.newPostTextBox.Text.Length > 0)
+            if (contentStream.newPostTextBox.Text.Length > 0)
             {
-                Post post = new Post() { User = userId, PostsContent = mainUser.newPostTextBox.Text, Comments = new List<BsonObjectId>(), Likers=new List<BsonObjectId>()};
+                Post post = new Post() {  User = contentStream.User.Id, PostsContent = contentStream.newPostTextBox.Text};
+                contentStream.newPostTextBox.Text = "";
                 var collection = GetCollection("posts");
+                var usersCollection = GetCollection("users");
                 await collection.InsertOneAsync(post.ToBsonDocument());
-                UpdateScrollContent(mainUser, userId);
+                var filter = Builders<BsonDocument>.Filter.Eq("_id", contentStream.User.Id);
+                var update = Builders<BsonDocument>.Update.AddToSet("posts", post.Id);
+                await usersCollection.UpdateOneAsync(filter,update);
+                UpdateScrollContent(contentStream);
             }
+            
 
            
 
@@ -93,18 +95,26 @@ namespace Social_network.Controller
             return userCursor;
 
         }
-        private static async Task<List<BsonDocument>> SortCollectionById(string collectionName)
+        private static async Task<List<BsonDocument>> SortCollectionById(string collectionName, bool ascending)
         {
 
             var collection = GetCollection(collectionName);
-
-            var sortedCollection = await collection.Find(new BsonDocument()).Sort("{_id:1}").Limit(15).ToListAsync();
+            List<BsonDocument> sortedCollection;
+            if (ascending)
+            {
+                sortedCollection = await collection.Find(new BsonDocument()).Sort("{_id:1}").Limit(15).ToListAsync();
+            }
+            else
+            {
+                sortedCollection = await collection.Find(new BsonDocument()).Sort("{_id:-1}").Limit(15).ToListAsync();
+            }
+            
             return sortedCollection;
         }
-        internal static async void UpdateScrollContent(MainUser mainUser, BsonObjectId userId)
+        internal static async void UpdateScrollContent(ContentStream contentStream)
         {
 
-            var documentsList =await SortCollectionById("posts");
+            var documentsList =await SortCollectionById("posts", false);
             List<string> headPosts = new List<string>();
             List<Post> posts = new List<Post>();
            
@@ -116,14 +126,14 @@ namespace Social_network.Controller
                 List<BsonDocument> userCursor = new List<BsonDocument>();
                 var User = await GetDocumentsList(filter,"users");
                 headPosts.Add(User[0]["firstName"].ToString() + " " + User[0]["secondName"].ToString());
-                documentsList[i].Remove("_id");
+                
                 posts.Add(BsonSerializer.Deserialize<Post>(documentsList[i]));
             }
             
 
 
 
-            ViewsController.ShowScrollContent(mainUser,userId,posts,headPosts);
+            ViewsController.ShowScrollContent(contentStream, posts,headPosts);
         }
 
         internal static async void RegisterUser(SingUpUser singUpUser)
@@ -158,7 +168,8 @@ namespace Social_network.Controller
                     FirstName = singUpUser.tBoxRegFName.Text,
                     SecondName = singUpUser.tBoxRegSName.Text,
                     Email = singUpUser.tBoxRegEmail.Text,
-                    Password = singUpUser.tBoxRegPass.Text
+                    Password = singUpUser.tBoxRegPass.Text,
+                    
                 };
 
                 user.Interests = new List<string>(singUpUser.tBoxRegInterets.Text.Split(','));

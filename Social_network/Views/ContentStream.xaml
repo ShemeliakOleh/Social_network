@@ -1,0 +1,44 @@
+﻿<Page x:Class="Social_network.Views.ContentStream"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Social_network.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ContentStream">
+
+    <Grid>
+        <ScrollViewer Background="White">
+            <StackPanel x:Name="mainStackContent">
+                <StackPanel>
+                    <TextBlock HorizontalAlignment="Center" Text="Новий пост" FontSize="13">
+
+                    </TextBlock>
+
+                    <TextBox x:Name="newPostTextBox" MinHeight="30" TextWrapping="Wrap">
+
+                    </TextBox>
+                    <Button HorizontalAlignment="Right" Background="White" BorderBrush="White" Click="Button_Click">Створити
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock>First_Name Second_Name</TextBlock>
+                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="700" TextWrapping="Wrap">Но активно развивающиеся страны третьего мира функционально разнесены на независимые элементы. Современные технологии достигли такого уровня, что внедрение современных методик предопределяет высокую востребованность модели развития. Ясность нашей позиции очевидна: выбранный нами инновационный путь позволяет выполнить важные задания по разработке своевременного выполнения сверхзадачи. Непосредственные участники технического прогресса указаны как претенденты на роль ключевых факторов. Каждый из нас понимает очевидную вещь: высококачественный прототип будущего проекта в значительной степени обусловливает важность новых предложений. Внезапно, активно развивающиеся страны третьего мира, инициированные исключительно синтетически, призваны к ответу. Безусловно, социально-экономическое развитие однозначно фиксирует необходимость первоочередных требований.
+                    </TextBlock>
+                    <Grid>
+                        <Button HorizontalAlignment="Left" Background="White" BorderBrush="White">Like
+                        </Button>
+                        <Button HorizontalAlignment="Center" Background="White" BorderBrush="White">More
+                        </Button>
+                        <Button HorizontalAlignment="Right" Background="White" BorderBrush="White">Comment
+                        </Button>
+                    </Grid>
+
+
+
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

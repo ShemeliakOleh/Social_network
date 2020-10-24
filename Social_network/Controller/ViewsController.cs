@@ -15,10 +15,10 @@ namespace Social_network.Controller
 {
   public  static class ViewsController
     {
-        internal static void ShowMainUser(User user,MainWindow loginWindow, BsonObjectId userId)
+        internal static void ShowMainUser(User user,MainWindow loginWindow)
         {
             loginWindow.tBlockIncorrectLogin.Visibility = System.Windows.Visibility.Visible;
-            MainUser mainUser = new MainUser(userId,user);
+            MainUser mainUser = new MainUser(user);
             mainUser.Show();
             loginWindow.Owner = mainUser;
             loginWindow.Close();
@@ -54,9 +54,9 @@ namespace Social_network.Controller
             singUpUser.Close();
         }
 
-        internal static void ShowScrollContent(MainUser mainUser, BsonObjectId userId, List<Post> posts, List<string> headPosts)
+        internal static void ShowScrollContent(ContentStream contentStream, List<Post> posts, List<string> headPosts)
         {
-            mainUser.mainStackContent.Children.RemoveRange(1, mainUser.mainStackContent.Children.Count-1);
+            contentStream.mainStackContent.Children.RemoveRange(1, contentStream.mainStackContent.Children.Count-1);
             for (int i =0; i < posts.Count; i++)
             {
                 
@@ -68,8 +68,8 @@ namespace Social_network.Controller
                 grid.Children.Add(new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "More" });
                 grid.Children.Add(new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Comment" });
                 stackPanel.Children.Add(grid);
-                
-                mainUser.mainStackContent.Children.Add(stackPanel);
+
+                contentStream.mainStackContent.Children.Add(stackPanel);
             }
         }
     }

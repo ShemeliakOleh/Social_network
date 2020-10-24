@@ -11,17 +11,28 @@ namespace Social_network.Models
 {
    public class Comment
     {
+        [BsonIgnoreIfDefault]
+        [BsonId]
+        public ObjectId Id { get; set; }
         [BsonElement("user")]
         public BsonObjectId User { get; set; }
 
         [BsonElement("post")]
-        public List<BsonObjectId> Post { get; set; }
+        public BsonObjectId Post { get; set; }
 
         [BsonElement("commentContent")]
         public string CommentContent { get; set; }
 
         [BsonElement("likers")]
         public List<BsonObjectId> Likers { get; set; }
+        public Comment()
+        {
+            Id = ObjectId.GenerateNewId();
+            User = ObjectId.Empty;
+            Post = ObjectId.Empty;
+            CommentContent = "";
+            Likers = new List<BsonObjectId>();
+        }
 
     }
 }
