@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using MongoDB.Bson;
@@ -54,23 +56,59 @@ namespace Social_network.Controller
             singUpUser.Close();
         }
 
-        internal static void ShowScrollContent(ContentStream contentStream, List<Post> posts, List<string> headPosts)
+        
+
+        internal static void ShowScrollContent(ContentStream contentStream, List<string> headPosts)
         {
             contentStream.mainStackContent.Children.RemoveRange(1, contentStream.mainStackContent.Children.Count-1);
-            for (int i =0; i < posts.Count; i++)
+            for (int i =0; i < contentStream.postsStreamList.Count; i++)
             {
                 
                 StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Vertical};
                 stackPanel.Children.Add(new TextBlock() {Text = headPosts[i]});
-                stackPanel.Children.Add(new TextBlock() {TextWrapping = System.Windows.TextWrapping.Wrap, Margin= new System.Windows.Thickness(0,5,0,0), MaxHeight = 120, Width = 500 , Text = posts[i].PostsContent});
+                stackPanel.Children.Add(new TextBlock() {TextWrapping = System.Windows.TextWrapping.Wrap, Margin= new System.Windows.Thickness(0,5,0,0), MaxHeight = 120, Width = 500 , Text = contentStream.postsStreamList[i].PostsContent});
                 Grid grid = new Grid();
-                grid.Children.Add(new Button() {HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Like" });
-                grid.Children.Add(new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "More" });
-                grid.Children.Add(new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Comment" });
-                stackPanel.Children.Add(grid);
+                var bLike = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Like", Tag = i };
+                var bMore = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "More", Tag = i };
+                var bComment = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Comment", Tag = i };
+                bComment.Click += new RoutedEventHandler(contentStream.BComment_Click);
+                bLike.Click += new RoutedEventHandler(contentStream.BLike_Click);
+                bMore.Click += new RoutedEventHandler(contentStream.BMore_Click);
+                grid.Children.Add(bLike);
+                grid.Children.Add(bMore);
+                grid.Children.Add(bComment);
 
+
+                stackPanel.Children.Add(grid);
                 contentStream.mainStackContent.Children.Add(stackPanel);
+               
             }
+            
+        }
+
+        internal static void ShowCommentsScrollContent(List<Comment> comments, string userName,PostCommentsStream postCommentsStream)
+        {
+            postCommentsStream.mainStackContent.Children.Clear();
+            StackPanel stackPanelMain = new StackPanel() { Orientation = Orientation.Vertical };
+            stackPanelMain.Children.Add(new TextBlock() { Text = userName });
+            stackPanelMain.Children.Add(new TextBlock() { TextWrapping = System.Windows.TextWrapping.Wrap, Margin = new System.Windows.Thickness(0, 5, 0, 0), MaxHeight = 120, Width = 700, Text = postCommentsStream.Post.PostsContent });
+            stackPanelMain.Children.Add(new Button() { });
+            Grid gridMain = new Grid();
+            var bLike = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Like" };
+            var bMore = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "More"}; ;
+            gridMain.Children.Add(bLike);
+            gridMain.Children.Add(bMore);
+            stackPanelMain.Children.Add(gridMain);
+            for (int i =0; i< comments.Count; i++) ////continue;
+            {
+
+            }
+        }
+
+        internal static void ShowCommentsPage(ContentStream contentStream, Post post)
+        {
+            MainUser parentWindowUser = (MainUser)Window.GetWindow(contentStream);
+            parentWindowUser.mainPage.Navigate(new PostCommentsStream(post));
         }
     }
 }

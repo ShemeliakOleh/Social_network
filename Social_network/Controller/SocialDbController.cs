@@ -12,6 +12,7 @@ using Social_network.Views;
 using System.Runtime.CompilerServices;
 using MongoDB.Bson.Serialization;
 using System.Windows.Media;
+using System.Windows.Data;
 
 namespace Social_network.Controller
 {
@@ -37,6 +38,38 @@ namespace Social_network.Controller
 
         }
 
+        internal static async void UpdateCommentsScrollContent(PostCommentsStream postCommentsStream)
+        {
+            var filterForComments = Builders<BsonDocument>.Filter.Eq("post",postCommentsStream.Post.Id);
+            var filterForUsers = Builders<BsonDocument>.Filter.Eq("_id", postCommentsStream.Post.User);
+            var commentsBson = await GetDocumentsList(filterForComments, "comments");
+            var userAsList = await GetDocumentsList(filterForUsers, "users");
+            var userName = userAsList[0]["firstName"] + " " + userAsList[0]["secondName"];
+            var comments = new List<Comment>();
+            for(int i =0; i< commentsBson.Count; i++)
+            {
+                comments.Add(BsonSerializer.Deserialize<Comment>(commentsBson[i]));
+            }
+            
+            ViewsController.ShowCommentsScrollContent(comments, userName,postCommentsStream);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
         internal static async void CreateNewPost(ContentStream contentStream)
 
         {
@@ -50,17 +83,39 @@ namespace Social_network.Controller
                 var filter = Builders<BsonDocument>.Filter.Eq("_id", contentStream.User.Id);
                 var update = Builders<BsonDocument>.Update.AddToSet("posts", post.Id);
                 await usersCollection.UpdateOneAsync(filter,update);
-                UpdateScrollContent(contentStream);
+                UpdatePostsScrollContent(contentStream);
             }
             
 
            
 
         }
+        internal static async void ClickComments(ContentStream contentStream, int index)
+        {
+            var filterForPosts = Builders<BsonDocument>.Filter.Eq("_id", contentStream.postsStreamList[index].Id); 
+           
+            
+            var postAsList = await GetDocumentsList(filterForPosts, "posts");
+
+            var post = BsonSerializer.Deserialize<Post>(postAsList[0]);
+           
+            ViewsController.ShowCommentsPage(contentStream,post);
+
+        }
+
+        internal static void ClickMore(ContentStream contentStream, int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void ClickLike(ContentStream contentStream, int index)
+        {
+            throw new NotImplementedException();
+        }
 
         private static async Task<List<BsonDocument>> GetDocumentsList ( FilterDefinition<BsonDocument> filter, string CollectionsName)
         {
-            var collection = GetCollection("users");
+            var collection = GetCollection(CollectionsName);
             List<BsonDocument> userCursor = new List<BsonDocument>();
             using (var cursor = await collection.FindAsync(filter))
             {
@@ -79,7 +134,7 @@ namespace Social_network.Controller
         private static async Task<List<BsonDocument>> GetDocumentsList(string CollectionsName)
         {
 
-            var collection = GetCollection("users");
+            var collection = GetCollection(CollectionsName);
             List<BsonDocument> userCursor = new List<BsonDocument>();
             using (var cursor = await collection.FindAsync(new BsonDocument()))
             {
@@ -111,7 +166,7 @@ namespace Social_network.Controller
             
             return sortedCollection;
         }
-        internal static async void UpdateScrollContent(ContentStream contentStream)
+        internal static async void UpdatePostsScrollContent(ContentStream contentStream)
         {
 
             var documentsList =await SortCollectionById("posts", false);
@@ -129,11 +184,11 @@ namespace Social_network.Controller
                 
                 posts.Add(BsonSerializer.Deserialize<Post>(documentsList[i]));
             }
-            
 
 
 
-            ViewsController.ShowScrollContent(contentStream, posts,headPosts);
+            contentStream.postsStreamList = new List<Post>(posts);
+            ViewsController.ShowScrollContent(contentStream,headPosts);
         }
 
         internal static async void RegisterUser(SingUpUser singUpUser)

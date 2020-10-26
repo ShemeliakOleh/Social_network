@@ -125,6 +125,9 @@
     <Compile Include="Views\MainUser.xaml.cs">
       <DependentUpon>MainUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PostCommentsStream.xaml.cs">
+      <DependentUpon>PostCommentsStream.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SingUpUser.xaml.cs">
       <DependentUpon>SingUpUser.xaml</DependentUpon>
     </Compile>
@@ -146,6 +149,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PostCommentsStream.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

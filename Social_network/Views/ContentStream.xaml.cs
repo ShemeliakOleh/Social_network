@@ -23,16 +23,43 @@ namespace Social_network.Views
     public partial class ContentStream : Page
     {
         public User User { get; set; }
+        public List<Post> postsStreamList { get; set; }
         public ContentStream(User user)
         {
+            postsStreamList = new List<Post>();
             this.User = user;
             InitializeComponent();
-            SocialDbController.UpdateScrollContent(this);
+            SocialDbController.UpdatePostsScrollContent(this);
+            
+            
+            
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void BCreatePost_Click(object sender, RoutedEventArgs e)
         {
             SocialDbController.CreateNewPost(this);
         }
+
+        internal void BComment_Click(object sender, RoutedEventArgs e)
+        {
+
+            int index = int.Parse(((Button)sender).Tag.ToString());
+            SocialDbController.ClickComments(this,index);
+           
+        }
+
+        internal void BMore_Click(object sender, RoutedEventArgs e)
+        {
+            int index = int.Parse(((Button)sender).Tag.ToString());
+            SocialDbController.ClickMore(this,index);
+        }
+
+        internal void BLike_Click(object sender, RoutedEventArgs e)
+        {
+            int index = int.Parse(((Button)sender).Tag.ToString());
+            SocialDbController.ClickLike(this,index);
+        }
+
+       
     }
 }
