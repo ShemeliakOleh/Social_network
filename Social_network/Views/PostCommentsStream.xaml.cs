@@ -33,5 +33,10 @@ namespace Social_network.Views
             
 
         }
+
+        private void bComment_Click(object sender, RoutedEventArgs e)
+        {
+            SocialDbController.CreateNewComment(this);
+        }
     }
 }
