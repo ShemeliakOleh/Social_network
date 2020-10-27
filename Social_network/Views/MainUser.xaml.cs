@@ -28,10 +28,11 @@ namespace Social_network.Views
             InitializeComponent();
             this.User = user;
             UserName.Text = user.FirstName;
-            mainPage.Navigate(new ContentStream(User));
+            ViewsController.ShowPostsPage(this);
 
 
-            
+
+
 
 
 
@@ -45,8 +46,11 @@ namespace Social_network.Views
 
 
 
-        }
 
-        
+        }
+        private void bSearch_Click(object sender, RoutedEventArgs e)
+        {
+            ViewsController.ShowSearchPage(((MainUser)Window.GetWindow(this)));
+        }
     }
 }

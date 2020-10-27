@@ -21,5 +21,6 @@
         <Frame NavigationUIVisibility="Hidden" x:Name="mainPage" Grid.Column="1" Grid.Row="1">
         
         </Frame>
+        <Button Name="bSearch" Grid.Column="1" HorizontalAlignment="Left" MinWidth="100" BorderBrush="White" Background="White" FontSize="20" Click="bSearch_Click">Search</Button>
     </Grid>
 </Window>

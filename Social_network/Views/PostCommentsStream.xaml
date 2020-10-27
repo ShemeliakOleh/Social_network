@@ -13,77 +13,27 @@
             <RowDefinition Height="4*"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="1" Grid.Column="0">
-            <TextBox x:Name="newCommentTextBox" MinHeight="60" TextWrapping="Wrap">
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="newCommentTextBox" MinHeight="60" TextWrapping="Wrap">
 
             </TextBox>
-            <Button Name="bComment" Margin="0 0 5 0" HorizontalAlignment="Right" Background="White" BorderBrush="White" FontSize="16" Click="bComment_Click" >Comment
+            <Button Name="bComment" Grid.Column="1" Grid.Row="1" Margin="0 0 50 0" HorizontalAlignment="Right" Background="White" BorderBrush="White" FontSize="16" Click="bComment_Click" >Comment
             </Button>
-        </StackPanel>
+            <Button Name="bBack" Grid.Column="0" Grid.Row="1" Margin="5 0 0 0" HorizontalAlignment="Left" Background="White" BorderBrush="White" FontSize="16" Click="bBack_Click" >Back
+            </Button>
+        </Grid>
+        
         <ScrollViewer >
             <StackPanel x:Name="mainStackContent">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock>First_Name Second_Name</TextBlock>
-                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="700" TextWrapping="Wrap">Но активно развивающиеся страны третьего мира функционально разнесены на независимые элементы. Современные технологии достигли такого уровня, что внедрение современных методик предопределяет высокую востребованность модели развития. Ясность нашей позиции очевидна: выбранный нами инновационный путь позволяет выполнить важные задания по разработке своевременного выполнения сверхзадачи. Непосредственные участники технического прогресса указаны как претенденты на роль ключевых факторов. Каждый из нас понимает очевидную вещь: высококачественный прототип будущего проекта в значительной степени обусловливает важность новых предложений. Внезапно, активно развивающиеся страны третьего мира, инициированные исключительно синтетически, призваны к ответу. Безусловно, социально-экономическое развитие однозначно фиксирует необходимость первоочередных требований.
-                    </TextBlock>
-                    <Grid>
-                        <Button x:Name="bLike" HorizontalAlignment="Left" Background="White" BorderBrush="White">Like
-                        </Button>
-                        <Button x:Name="bMore" HorizontalAlignment="Center" Background="White" BorderBrush="White">More
-                        </Button>
-                       
-                    </Grid>
-                   
-
-
-                </StackPanel>
-                <StackPanel Margin="5">
-                    <TextBlock Margin="20 10 5 5">Oleh Second_Name</TextBlock>
-                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="600" TextWrapping="Wrap"> Comment from Oleh
-                    </TextBlock>
-                </StackPanel>
-                <StackPanel Margin="5">
-                    <TextBlock Margin="20 10 5 5">Vova Second_Name</TextBlock>
-                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="600" TextWrapping="Wrap"> Comment from Vova
-                    </TextBlock>
-                </StackPanel>
-
-
-                <StackPanel Margin="5">
-                    <TextBlock Margin="20 10 5 5">Vasia Second_Name</TextBlock>
-                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="600" TextWrapping="Wrap"> Comment from Vasia
-                    </TextBlock>
-                </StackPanel>
-                <StackPanel Margin="5">
-                    <TextBlock Margin="20 10 5 5">Stepan Second_Name</TextBlock>
-                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="600" TextWrapping="Wrap"> Comment from Stepan
-                    </TextBlock>
-                </StackPanel>
-                <StackPanel Margin="5">
-                    <TextBlock Margin="20 10 5 5">Misha Second_Name</TextBlock>
-                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="600" TextWrapping="Wrap"> Comment from Misha
-                    </TextBlock>
-                </StackPanel>
-                <StackPanel Margin="5">
-                    <TextBlock Margin="20 10 5 5">Ivan Second_Name</TextBlock>
-                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="600" TextWrapping="Wrap"> Comment from anyone
-                    </TextBlock>
-                </StackPanel>
-                <StackPanel Margin="5">
-                    <TextBlock Margin="20 10 5 5">Roman Second_Name</TextBlock>
-                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="600" TextWrapping="Wrap"> Comment from anyone
-                    </TextBlock>
-                </StackPanel>
-                <StackPanel Margin="5">
-                    <TextBlock Margin="20 10 5 5">Mykola Second_Name</TextBlock>
-                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="600" TextWrapping="Wrap"> Comment from anyone
-                    </TextBlock>
-                </StackPanel>
-                <StackPanel Margin="5">
-                    <TextBlock Margin="20 10 5 5">Taras Second_Name</TextBlock>
-                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="600" TextWrapping="Wrap"> Comment from anyone
-                    </TextBlock>
-                </StackPanel>
+                
             </StackPanel>
         </ScrollViewer>
     </Grid>

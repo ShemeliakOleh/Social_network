@@ -38,7 +38,146 @@ namespace Social_network.Controller
             }
 
         }
+        internal static async void UpdateCommentsScrollContent(PostCommentsStream postCommentsStream)
+        {
+            var filterForComments = Builders<BsonDocument>.Filter.Eq("post", postCommentsStream.Post.Id);
+            var filterForUsers = Builders<BsonDocument>.Filter.Eq("_id", postCommentsStream.Post.User);
+            //var commentsBson = await GetDocumentsList(filterForComments, "comments");
+            var userAsList = await GetDocumentsList(filterForUsers, "users");
+            var userName = userAsList[0]["firstName"] + " " + userAsList[0]["secondName"];
+            //var comments = new List<Comment>();
+            List<ObjectId> CommetsIds = new List<ObjectId>();
+            //for(int i =0; i< commentsBson.Count; i++)
+            //{
+            //    comments.Add(BsonSerializer.Deserialize<Comment>(commentsBson[i]));
+            //    //CommetsIds.Add(comments[i].Id);
+            //}
+            var documentsList = await SortCollectionById("comments", false, filterForComments);
+            List<string> headComments = new List<string>();
+            List<Comment> comments = new List<Comment>();
 
+            for (int i = 0; i < documentsList.Count; i++)
+            {
+
+                var filter = Builders<BsonDocument>.Filter.Eq("_id", documentsList[i]["user"]);
+
+                List<BsonDocument> userCursor = new List<BsonDocument>();
+                var User = await GetDocumentsList(filter, "users");
+                headComments.Add(User[0]["firstName"].ToString() + " " + User[0]["secondName"].ToString());
+
+
+                comments.Add(BsonSerializer.Deserialize<Comment>(documentsList[i]));
+            }
+
+
+            //var filterUsersWithComments = new BsonDocument("_id", new BsonDocument("$in", new BsonArray(CommetsIds)));
+            //var UsersWithComments = await GetDocumentsList(filterUsersWithComments, "users");
+            ViewsController.ShowCommentsScrollContent(comments, userName, postCommentsStream, headComments);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+        internal static async void ClickView(SearchPage searchPage, int index)
+        {
+            var filterForUser = Builders<BsonDocument>.Filter.Eq("_id", searchPage.usersStreamList[index].Id);
+            var userAsList = await GetDocumentsList(filterForUser, "users");
+            var user = BsonSerializer.Deserialize<User>(userAsList[0]);
+            ViewsController.ShowUserPage(searchPage, user);
+        }
+
+        internal static async void UpdatePeopleScrollContent(SearchPage searchPage)
+        {
+            if (searchPage.userDataContent.Text.Length > 0)
+            {
+                searchPage.mainStackPeople.Children.Clear();
+                var Array = searchPage.userDataContent.Text.Split(' ');
+                if (Array.Length == 2)
+                {
+                    var filterFirstName = (Builders<BsonDocument>.Filter.Eq("firstName", Array[0]) & Builders<BsonDocument>.Filter.Eq("secondName", Array[1]));
+                    var filterFirstSurname = (Builders<BsonDocument>.Filter.Eq("firstName", Array[1]) & Builders<BsonDocument>.Filter.Eq("secondName", Array[0]));
+                    var filter = (filterFirstName | filterFirstSurname);
+                    var documentsList = await SortCollectionById("users", false,filter);
+                    List<User> users = new List<User>();
+                    for (int i = 0; i < documentsList.Count; i++)
+                    {
+
+                        users.Add(BsonSerializer.Deserialize<User>(documentsList[i]));
+                    }
+                    searchPage.usersStreamList = users;
+                    ViewsController.ShowScrollPeopleContent(searchPage);
+                }
+                else if (Array.Length == 1)
+                {
+                    var filter = (Builders<BsonDocument>.Filter.Eq("email",Array[0])| Builders<BsonDocument>.Filter.Eq("secondName", Array[0]));
+                    var documentsList = await SortCollectionById("users", false, filter);
+                    List<User> users = new List<User>();
+                    for (int i = 0; i < documentsList.Count; i++)
+                    {
+
+                        users.Add(BsonSerializer.Deserialize<User>(documentsList[i]));
+                    }
+                    searchPage.usersStreamList = users;
+                    ViewsController.ShowScrollPeopleContent(searchPage);
+                }
+                else
+                {
+                    ViewsController.ShowScrollPeopleContent(searchPage);
+                }
+
+
+            }
+            else
+            {
+                var documentsList = await SortCollectionById("users", false);
+                List<User> users = new List<User>();
+                for (int i = 0; i < documentsList.Count; i++)
+                {
+
+                    users.Add(BsonSerializer.Deserialize<User>(documentsList[i]));
+                }
+                searchPage.usersStreamList = users;
+                ViewsController.ShowScrollPeopleContent(searchPage);
+            }
+
+        }
+        internal static async void UpdatePostsScrollContent(ContentStream contentStream)
+        {
+
+            var documentsList = await SortCollectionById("posts", false);
+            List<string> headPosts = new List<string>();
+            List<Post> posts = new List<Post>();
+
+            for (int i = 0; i < documentsList.Count; i++)
+            {
+
+                var filter = Builders<BsonDocument>.Filter.Eq("_id", documentsList[i]["user"]);
+
+                List<BsonDocument> userCursor = new List<BsonDocument>();
+                var User = await GetDocumentsList(filter, "users");
+                headPosts.Add(User[0]["firstName"].ToString() + " " + User[0]["secondName"].ToString());
+
+                posts.Add(BsonSerializer.Deserialize<Post>(documentsList[i]));
+            }
+
+
+
+            contentStream.postsStreamList = new List<Post>(posts);
+            ViewsController.ShowScrollContent(contentStream, headPosts);
+        }
         internal static async void CreateNewComment(PostCommentsStream postCommentsStream)
         {
             if (postCommentsStream.newCommentTextBox.Text.Length > 0)
@@ -63,58 +202,7 @@ namespace Social_network.Controller
             }
         }
 
-        internal static async void UpdateCommentsScrollContent(PostCommentsStream postCommentsStream)
-        {
-            var filterForComments = Builders<BsonDocument>.Filter.Eq("post",postCommentsStream.Post.Id);
-            var filterForUsers = Builders<BsonDocument>.Filter.Eq("_id", postCommentsStream.Post.User);
-            //var commentsBson = await GetDocumentsList(filterForComments, "comments");
-            var userAsList = await GetDocumentsList(filterForUsers, "users");
-            var userName = userAsList[0]["firstName"] + " " + userAsList[0]["secondName"];
-            //var comments = new List<Comment>();
-            List<ObjectId> CommetsIds = new List<ObjectId>();
-            //for(int i =0; i< commentsBson.Count; i++)
-            //{
-            //    comments.Add(BsonSerializer.Deserialize<Comment>(commentsBson[i]));
-            //    //CommetsIds.Add(comments[i].Id);
-            //}
-            var documentsList = await SortCollectionById("comments", false,filterForComments);
-            List<string> headComments = new List<string>();
-            List<Comment> comments = new List<Comment>();
-
-            for (int i = 0; i < documentsList.Count; i++)
-            {
-
-                var filter = Builders<BsonDocument>.Filter.Eq("_id", documentsList[i]["user"]);
-
-                List<BsonDocument> userCursor = new List<BsonDocument>();
-                var User = await GetDocumentsList(filter, "users");
-                headComments.Add(User[0]["firstName"].ToString() + " " + User[0]["secondName"].ToString());
-
-
-                comments.Add(BsonSerializer.Deserialize<Comment>(documentsList[i]));
-            }
-
-
-            //var filterUsersWithComments = new BsonDocument("_id", new BsonDocument("$in", new BsonArray(CommetsIds)));
-            //var UsersWithComments = await GetDocumentsList(filterUsersWithComments, "users");
-            ViewsController.ShowCommentsScrollContent(comments, userName,postCommentsStream,headComments);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        }
+       
 
         internal static async void CreateNewPost(ContentStream contentStream)
 
@@ -236,30 +324,7 @@ namespace Social_network.Controller
 
             return sortedCollection;
         }
-        internal static async void UpdatePostsScrollContent(ContentStream contentStream)
-        {
-
-            var documentsList =await SortCollectionById("posts", false);
-            List<string> headPosts = new List<string>();
-            List<Post> posts = new List<Post>();
-           
-            for (int i =0; i< documentsList.Count; i++)
-            {
-                
-              var filter = Builders<BsonDocument>.Filter.Eq("_id",documentsList[i]["user"]);
-            
-                List<BsonDocument> userCursor = new List<BsonDocument>();
-                var User = await GetDocumentsList(filter,"users");
-                headPosts.Add(User[0]["firstName"].ToString() + " " + User[0]["secondName"].ToString());
-                
-                posts.Add(BsonSerializer.Deserialize<Post>(documentsList[i]));
-            }
-
-
-
-            contentStream.postsStreamList = new List<Post>(posts);
-            ViewsController.ShowScrollContent(contentStream,headPosts);
-        }
+       
 
         internal static async void RegisterUser(SingUpUser singUpUser)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -28,6 +29,16 @@ namespace Social_network.Controller
         internal static void IncorrectLogin(MainWindow loginWindow)
         {
             loginWindow.tBlockIncorrectLogin.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        internal static void ShowPostsPage(MainUser mainUser)
+        {
+            mainUser.mainPage.Navigate(new ContentStream(mainUser.User));
+        }
+
+        internal static void ShowSearchPage(MainUser mainUser)
+        {
+            mainUser.mainPage.Navigate(new SearchPage());
         }
 
         internal static void CancelRegistration(SingUpUser singUpUser)
@@ -84,6 +95,30 @@ namespace Social_network.Controller
                
             }
             
+        }
+
+        internal static void ShowUserPage(SearchPage searchPage, User user)
+        {
+            MainUser parentWindowUser = (MainUser)Window.GetWindow(searchPage);
+            parentWindowUser.mainPage.Navigate(new UserPageStream());
+        }
+
+        internal static void ShowScrollPeopleContent(SearchPage searchPage)
+        {
+            searchPage.mainStackPeople.Children.Clear();
+            for (int i =0; i< searchPage.usersStreamList.Count; i++)
+            {
+                StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+                var bViewUser = new Button() { MinWidth = 130, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.Wheat), FontSize = 20, Margin = new System.Windows.Thickness(20, 20, 0, 20), Content = "View user", Tag = i };
+                bViewUser.Click+= new RoutedEventHandler(searchPage.bViewUser_Click);
+                stackPanel.Children.Add(new TextBlock() {Height=30,HorizontalAlignment= HorizontalAlignment.Left, MinWidth = 170,FontSize = 20, Text = searchPage.usersStreamList[i].FirstName});
+                stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = searchPage.usersStreamList[i].SecondName });
+                stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = searchPage.usersStreamList[i].Email });
+                stackPanel.Children.Add(bViewUser);
+                searchPage.mainStackPeople.Children.Add(stackPanel);
+            }
+           
+
         }
 
         internal static void ShowCommentsScrollContent(List<Comment> comments, string userName,PostCommentsStream postCommentsStream,List<string> headComments)

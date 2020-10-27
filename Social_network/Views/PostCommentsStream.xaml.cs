@@ -38,5 +38,11 @@ namespace Social_network.Views
         {
             SocialDbController.CreateNewComment(this);
         }
+
+        private void bBack_Click(object sender, RoutedEventArgs e)
+        {
+
+            ViewsController.ShowPostsPage(((MainUser)Window.GetWindow(this)));
+        }
     }
 }
