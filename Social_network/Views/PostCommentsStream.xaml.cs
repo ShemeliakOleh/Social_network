@@ -29,7 +29,7 @@ namespace Social_network.Views
            
             this.Post = post;
             InitializeComponent();
-            SocialDbController.UpdateCommentsScrollContent(this);
+            
             
 
         }
@@ -43,6 +43,11 @@ namespace Social_network.Views
         {
 
             ViewsController.ShowPostsPage(((MainUser)Window.GetWindow(this)));
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            SocialDbController.UpdateCommentsScrollContent(this);
         }
     }
 }

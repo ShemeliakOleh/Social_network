@@ -6,10 +6,11 @@
       xmlns:local="clr-namespace:Social_network.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ContentStream">
+      Title="ContentStream"
+      Loaded="Page_Loaded">
 
     <Grid>
-        <ScrollViewer Background="White">
+        <ScrollViewer Background="White" >
             <StackPanel x:Name="mainStackContent">
                 <StackPanel>
                     <TextBlock HorizontalAlignment="Center" Text="New post" FontSize="13">

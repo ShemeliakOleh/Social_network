@@ -35,5 +35,10 @@ namespace Social_network.Views
         {
             ViewsController.CancelRegistration(this);
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

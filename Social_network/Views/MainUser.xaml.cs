@@ -28,29 +28,15 @@ namespace Social_network.Views
             InitializeComponent();
             this.User = user;
             UserName.Text = user.FirstName;
-            ViewsController.ShowPostsPage(this);
-
-
-
-
-
-
-
-            //stackContent.Children.Add();
-
-
-
-
-
-
-
-
-
-
         }
         private void bSearch_Click(object sender, RoutedEventArgs e)
         {
             ViewsController.ShowSearchPage(((MainUser)Window.GetWindow(this)));
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewsController.ShowPostsPage(this);
         }
     }
 }

@@ -38,6 +38,90 @@ namespace Social_network.Controller
             }
 
         }
+
+        internal static async void ClickComments(UserPageStream userPageStream, int index)
+        {
+            var filterForPosts = Builders<BsonDocument>.Filter.Eq("_id", userPageStream.postsStreamList[index].Id);
+
+
+            var postAsList = await GetDocumentsList(filterForPosts, "posts");
+
+            var post = BsonSerializer.Deserialize<Post>(postAsList[0]);
+
+            ViewsController.ShowCommentsPage(userPageStream, post);
+        }
+
+        internal static void ClickMore(UserPageStream userPageStream, int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+
+        internal static void ClickLike(UserPageStream userPageStream, int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static async void ClickFollow(UserPageStream userPageStream, int index)
+        {
+            var parent = ViewsController.GetParentWindow(userPageStream);
+
+            var filterUser = Builders<BsonDocument>.Filter.Eq("_id",userPageStream.User.Id);
+            var filterMainUser = Builders<BsonDocument>.Filter.Eq("_id",parent.User.Id);
+            var collection = GetCollection("users");
+            if (index == -2 )
+            {
+
+                //var updateMainUser = Builders<BsonDocument>.Update.AddToSet("following",userPageStream.User.Id );
+                //var updateUser = Builders<BsonDocument>.Update.AddToSet("followers", parent.User.Id);
+                parent.User.Following.Add(userPageStream.User.Id);
+                userPageStream.User.Followers.Add(parent.User.Id);
+                await collection.ReplaceOneAsync(filterMainUser,parent.User.ToBsonDocument());
+                await collection.ReplaceOneAsync(filterUser, userPageStream.User.ToBsonDocument());
+                //await collection.UpdateOneAsync(filterMainUser, updateMainUser);
+                //await collection.UpdateOneAsync(filterUser, updateUser);
+                userPageStream.bFollow.Content = "Following";
+                userPageStream.bFollow.Tag = -1;
+            }else if(index == 1)
+            {
+                //var updateMainUser = Builders<BsonDocument>.Update.AddToSet("following", userPageStream.User.Id);
+                //var updateUser = Builders<BsonDocument>.Update.AddToSet("followers", parent.User.Id);
+                parent.User.Following.Add(userPageStream.User.Id);
+                userPageStream.User.Followers.Add(parent.User.Id);
+                await collection.ReplaceOneAsync(filterMainUser, parent.User.ToBsonDocument());
+                await collection.ReplaceOneAsync(filterUser, userPageStream.User.ToBsonDocument());
+                //await collection.UpdateOneAsync(filterMainUser, updateMainUser);
+                //await collection.UpdateOneAsync(filterUser, updateUser);
+                userPageStream.bFollow.Content = "Following";
+                userPageStream.bFollow.Tag =2;
+            }else if(index == 2)
+            {
+                //var updateMainUser = Builders<BsonDocument>.Update.Pull("following", userPageStream.User.Id);
+                //var updateUser = Builders<BsonDocument>.Update.Pull("followers", parent.User.Id);
+                parent.User.Following.Remove(userPageStream.User.Id);
+                userPageStream.User.Followers.Remove(parent.User.Id);
+                await collection.ReplaceOneAsync(filterMainUser, parent.User.ToBsonDocument());
+                await collection.ReplaceOneAsync(filterUser, userPageStream.User.ToBsonDocument());
+                //await collection.UpdateOneAsync(filterMainUser, updateMainUser);
+                //await collection.UpdateOneAsync(filterUser, updateUser);
+                userPageStream.bFollow.Content = "Follow Back";
+                userPageStream.bFollow.Tag =1;
+            }else if (index == -1)
+            {
+                //var updateMainUser = Builders<BsonDocument>.Update.Pull("following", userPageStream.User.Id);
+                //var updateUser = Builders<BsonDocument>.Update.Pull("followers", parent.User.Id);
+                parent.User.Following.Remove(userPageStream.User.Id);
+                userPageStream.User.Followers.Remove(parent.User.Id);
+                await collection.ReplaceOneAsync(filterMainUser, parent.User.ToBsonDocument());
+                await collection.ReplaceOneAsync(filterUser, userPageStream.User.ToBsonDocument());
+                //await collection.UpdateOneAsync(filterMainUser, updateMainUser);
+                //await collection.UpdateOneAsync(filterUser, updateUser);
+                userPageStream.bFollow.Content = "Follow";
+                userPageStream.bFollow.Tag = -2;
+            }
+        }
+
         internal static async void UpdateCommentsScrollContent(PostCommentsStream postCommentsStream)
         {
             var filterForComments = Builders<BsonDocument>.Filter.Eq("post", postCommentsStream.Post.Id);
@@ -90,6 +174,18 @@ namespace Social_network.Controller
 
 
         }
+        internal static async void UpdateUserPostsScrollContent(UserPageStream userPageStream)
+        {
+            var filterForPosts = Builders<BsonDocument>.Filter.Eq("user", userPageStream.User.Id);
+            var documentsList = await SortCollectionById("posts", false, filterForPosts);
+            List<Post> posts = new List<Post>();
+            for (int i = 0; i < documentsList.Count; i++)
+            {
+                posts.Add(BsonSerializer.Deserialize<Post>(documentsList[i]));
+            }
+            userPageStream.postsStreamList = new List<Post>(posts);
+            ViewsController.ShowUserScrollContent(userPageStream);
+        }
 
         internal static async void ClickView(SearchPage searchPage, int index)
         {
@@ -122,7 +218,7 @@ namespace Social_network.Controller
                 }
                 else if (Array.Length == 1)
                 {
-                    var filter = (Builders<BsonDocument>.Filter.Eq("email",Array[0])| Builders<BsonDocument>.Filter.Eq("secondName", Array[0]));
+                    var filter = (Builders<BsonDocument>.Filter.Eq("email",Array[0])| Builders<BsonDocument>.Filter.Eq("secondName", Array[0]) | Builders<BsonDocument>.Filter.Eq("firstName", Array[0]));
                     var documentsList = await SortCollectionById("users", false, filter);
                     List<User> users = new List<User>();
                     for (int i = 0; i < documentsList.Count; i++)
@@ -244,6 +340,7 @@ namespace Social_network.Controller
             ViewsController.ShowCommentsPage(contentStream,post);
 
         }
+      
 
         internal static void ClickMore(ContentStream contentStream, int index)
         {

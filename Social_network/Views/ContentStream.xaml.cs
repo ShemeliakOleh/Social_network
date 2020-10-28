@@ -29,7 +29,7 @@ namespace Social_network.Views
             postsStreamList = new List<Post>();
             this.User = user;
             InitializeComponent();
-            SocialDbController.UpdatePostsScrollContent(this);
+           
             
             
             
@@ -60,6 +60,9 @@ namespace Social_network.Views
             SocialDbController.ClickLike(this,index);
         }
 
-       
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            SocialDbController.UpdatePostsScrollContent(this);
+        }
     }
 }

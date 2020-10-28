@@ -27,7 +27,7 @@ namespace Social_network.Views
         {
             InitializeComponent();
             usersStreamList = new List<User>();
-            SocialDbController.UpdatePeopleScrollContent(this);
+            
         }
 
         private void bBack_Click(object sender, RoutedEventArgs e)
@@ -43,6 +43,11 @@ namespace Social_network.Views
         {
             int index = int.Parse(((Button)sender).Tag.ToString());
             SocialDbController.ClickView(this, index);
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            SocialDbController.UpdatePeopleScrollContent(this);
         }
     }
 }

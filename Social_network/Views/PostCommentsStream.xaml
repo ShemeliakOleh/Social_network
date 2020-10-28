@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:Social_network.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="PostCommentsStream">
+      Title="PostCommentsStream"
+      Loaded="Page_Loaded">
 
     <Grid Background="White">
         <Grid.RowDefinitions>

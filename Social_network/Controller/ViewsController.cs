@@ -57,6 +57,69 @@ namespace Social_network.Controller
             loginWindow.Close();
         }
 
+        internal static void ShowCommentsPage(UserPageStream userPageStream, Post post)
+        {
+            MainUser parentWindowUser = (MainUser)Window.GetWindow(userPageStream);
+            parentWindowUser.mainPage.Navigate(new PostCommentsStream(post));
+        }
+
+        internal static void ShowUserScrollContent(UserPageStream userPageStream)
+        {
+            userPageStream.mainStackUserContent.Children.RemoveRange(1, userPageStream.mainStackUserContent.Children.Count - 1);
+
+
+            
+            userPageStream.blockFirstName.Text = userPageStream.User.FirstName;
+            userPageStream.blockSecondName.Text = userPageStream.User.SecondName;
+            userPageStream.blockEmail.Text = userPageStream.User.Email;
+            userPageStream.blockInterests.Text = String.Join(", ",userPageStream.User.Interests);
+            var parent = GetParentWindow(userPageStream);
+            if ((parent.User.Following.Contains(userPageStream.User.Id)) &&(parent.User.Followers.Contains(userPageStream.User.Id)))
+            {
+                userPageStream.bFollow.Tag = 2;
+                userPageStream.bFollow.Content = "Following";
+                
+            }
+            else if (parent.User.Followers.Contains(userPageStream.User.Id))
+                {
+                    userPageStream.bFollow.Tag = 1;
+                    userPageStream.bFollow.Content = "Follow Back";
+                }
+            else if (parent.User.Following.Contains(userPageStream.User.Id))
+                {
+                    userPageStream.bFollow.Tag = -1;
+                    userPageStream.bFollow.Content = "Following";
+                }
+            else
+                {
+                    userPageStream.bFollow.Tag = -2;
+                    userPageStream.bFollow.Content = "Follow";
+                }
+               
+            
+            for (int i = 0; i < userPageStream.postsStreamList.Count; i++)
+            {
+
+                StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Vertical };
+                stackPanel.Children.Add(new TextBlock() { Text = userPageStream.User.FirstName + " " + userPageStream.User.SecondName });
+                stackPanel.Children.Add(new TextBlock() { TextWrapping = System.Windows.TextWrapping.Wrap, Margin = new System.Windows.Thickness(0, 5, 0, 0), MaxHeight = 120, Width = 500, Text = userPageStream.postsStreamList[i].PostsContent });
+                Grid grid = new Grid();
+                var bLike = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Like", Tag = i };
+                var bMore = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "More", Tag = i };
+                var bComment = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Comment", Tag = i };
+                bComment.Click += new RoutedEventHandler(userPageStream.BComment_Click);
+                bLike.Click += new RoutedEventHandler(userPageStream.BLike_Click);
+                bMore.Click += new RoutedEventHandler(userPageStream.BMore_Click);
+                grid.Children.Add(bLike);
+                grid.Children.Add(bMore);
+                grid.Children.Add(bComment);
+                stackPanel.Children.Add(grid);
+                userPageStream.mainStackUserContent.Children.Add(stackPanel);
+
+            }
+           
+        }
+
         internal static void ShowLoginUser(SingUpUser singUpUser, string email, string password)
         {
             MainWindow loginWindow = new MainWindow();
@@ -99,10 +162,14 @@ namespace Social_network.Controller
 
         internal static void ShowUserPage(SearchPage searchPage, User user)
         {
-            MainUser parentWindowUser = (MainUser)Window.GetWindow(searchPage);
-            parentWindowUser.mainPage.Navigate(new UserPageStream());
+            var parent = GetParentWindow(searchPage);
+            parent.mainPage.Navigate(new UserPageStream(user));
         }
-
+        internal static MainUser GetParentWindow(Page page)
+        {
+            MainUser parentWindowUser = (MainUser)Window.GetWindow(page);
+            return parentWindowUser;
+        }
         internal static void ShowScrollPeopleContent(SearchPage searchPage)
         {
             searchPage.mainStackPeople.Children.Clear();
@@ -123,6 +190,7 @@ namespace Social_network.Controller
 
         internal static void ShowCommentsScrollContent(List<Comment> comments, string userName,PostCommentsStream postCommentsStream,List<string> headComments)
         {
+            var parent = GetParentWindow(postCommentsStream);
             postCommentsStream.mainStackContent.Children.Clear();
             StackPanel stackPanelMain = new StackPanel() { Orientation = Orientation.Vertical };
             stackPanelMain.Children.Add(new TextBlock() { Text = userName });
@@ -145,8 +213,9 @@ namespace Social_network.Controller
 
         internal static void ShowCommentsPage(ContentStream contentStream, Post post)
         {
-            MainUser parentWindowUser = (MainUser)Window.GetWindow(contentStream);
-            parentWindowUser.mainPage.Navigate(new PostCommentsStream(post));
+            var parent =  GetParentWindow(contentStream);
+            parent.mainPage.Navigate(new PostCommentsStream(post));
+
         }
     }
 }
