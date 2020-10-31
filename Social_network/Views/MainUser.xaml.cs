@@ -38,5 +38,15 @@ namespace Social_network.Views
         {
             ViewsController.ShowPostsPage(this);
         }
+
+        private void bFollowing_Click(object sender, RoutedEventArgs e)
+        {
+            ViewsController.ShowFollowingPage(this);
+        }
+
+        private void bFollowers_Click(object sender, RoutedEventArgs e)
+        {
+            ViewsController.ShowFollowersPage(this);
+        }
     }
 }

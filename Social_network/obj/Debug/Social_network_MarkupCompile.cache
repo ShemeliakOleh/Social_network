@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\App.xaml
-7-1901196073
+9-368501813
 71009964479
-1658372426
+18-1254491625
 1251186511349
-MainWindow.xaml;Views\ContentStream.xaml;Views\MainUser.xaml;Views\PostCommentsStream.xaml;Views\SearchPage.xaml;Views\SingUpUser.xaml;Views\UserPageStream.xaml;
+MainWindow.xaml;Views\ContentStream.xaml;Views\FollowersPage.xaml;Views\FollowingPage.xaml;Views\MainUser.xaml;Views\PostCommentsStream.xaml;Views\SearchPage.xaml;Views\SingUpUser.xaml;Views\UserPageStream.xaml;
 
 False
 

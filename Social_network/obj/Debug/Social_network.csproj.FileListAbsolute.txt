@@ -43,3 +43,7 @@ C:\Users\Администратор\source\repos\Social_network\Social_network\S
 C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Views\SearchPage.baml
 C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Views\UserPageStream.g.cs
 C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Views\UserPageStream.baml
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Views\FollowingPage.g.cs
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Views\FollowingPage.baml
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Views\FollowersPage.g.cs
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Views\FollowersPage.baml

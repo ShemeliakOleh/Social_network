@@ -22,6 +22,11 @@
         <Frame NavigationUIVisibility="Hidden" x:Name="mainPage" Grid.Column="1" Grid.Row="1">
         
         </Frame>
-        <Button Name="bSearch" Grid.Column="1" HorizontalAlignment="Left" MinWidth="100" BorderBrush="White" Background="White" FontSize="20" Click="bSearch_Click">Search</Button>
+        <StackPanel  Grid.Column="1" Orientation="Horizontal">
+            <Button Name="bSearch" HorizontalAlignment="Left" MinWidth="100" BorderBrush="White" Background="White" FontSize="20" Click="bSearch_Click">Search</Button>
+            <Button Name="bFollowing" HorizontalAlignment="Left" MinWidth="100" BorderBrush="White" Background="White" FontSize="20" Click="bFollowing_Click">Following</Button>
+            <Button Name="bFollowers" HorizontalAlignment="Left" MinWidth="100" BorderBrush="White" Background="White" FontSize="20" Click="bFollowers_Click">Followers</Button>
+        </StackPanel>
+        
     </Grid>
 </Window>

@@ -122,6 +122,12 @@
     <Compile Include="Views\ContentStream.xaml.cs">
       <DependentUpon>ContentStream.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FollowersPage.xaml.cs">
+      <DependentUpon>FollowersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FollowingPage.xaml.cs">
+      <DependentUpon>FollowingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainUser.xaml.cs">
       <DependentUpon>MainUser.xaml</DependentUpon>
     </Compile>
@@ -151,6 +157,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ContentStream.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FollowersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FollowingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -41,12 +41,48 @@ namespace Social_network.Controller
             mainUser.mainPage.Navigate(new SearchPage());
         }
 
+        internal static void ShowFollowingPage(MainUser mainUser)
+        {
+            mainUser.mainPage.Navigate(new FollowingPage(mainUser.User));
+        }
+        internal static void ShowFollowersPage(MainUser mainUser)
+        {
+            mainUser.mainPage.Navigate(new FollowersPage(mainUser.User));
+        }
         internal static void CancelRegistration(SingUpUser singUpUser)
         {
             MainWindow loginWindow = new MainWindow();
             loginWindow.Show();
             singUpUser.Owner = loginWindow;
             singUpUser.Close();
+        }
+
+        internal static void ShowUserPage(FollowersPage followersPage, User user)
+        {
+            var parent = GetParentWindow(followersPage);
+            parent.mainPage.Navigate(new UserPageStream(user));
+        }
+
+        internal static void ShowUserPage(FollowingPage followingPage, User user)
+        {
+            var parent = GetParentWindow(followingPage);
+            parent.mainPage.Navigate(new UserPageStream(user));
+        }
+
+        internal static void ShowScrollFollowingContent(FollowersPage followersPage)
+        {
+            followersPage.mainStackFollowers.Children.Clear();
+            for (int i = 0; i < followersPage.followersStreamList.Count; i++)
+            {
+                StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+                var bViewUser = new Button() { MinWidth = 130, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.Wheat), FontSize = 20, Margin = new System.Windows.Thickness(20, 20, 0, 20), Content = "View user", Tag = i };
+                bViewUser.Click += new RoutedEventHandler(followersPage.bViewUser_Click);
+                stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = followersPage.followersStreamList[i].FirstName });
+                stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = followersPage.followersStreamList[i].SecondName });
+                stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = followersPage.followersStreamList[i].Email });
+                stackPanel.Children.Add(bViewUser);
+                followersPage.mainStackFollowers.Children.Add(stackPanel);
+            }
         }
 
         internal static void ShowUpdatedBMore(UserPageStream userPageStream, int index)
@@ -58,6 +94,22 @@ namespace Social_network.Controller
             else
             {
                 userPageStream.PostsContentList[index].MaxHeight = double.PositiveInfinity;
+            }
+        }
+
+        internal static void ShowScrollFollowingContent(FollowingPage followingPage)
+        {
+            followingPage.mainStackFollowing.Children.Clear();
+            for (int i = 0; i < followingPage.followingStreamList.Count; i++)
+            {
+                StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+                var bViewUser = new Button() { MinWidth = 130, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.Wheat), FontSize = 20, Margin = new System.Windows.Thickness(20, 20, 0, 20), Content = "View user", Tag = i };
+                bViewUser.Click += new RoutedEventHandler(followingPage.bViewUser_Click);
+                stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = followingPage.followingStreamList[i].FirstName });
+                stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = followingPage.followingStreamList[i].SecondName });
+                stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = followingPage.followingStreamList[i].Email });
+                stackPanel.Children.Add(bViewUser);
+                followingPage.mainStackFollowing.Children.Add(stackPanel);
             }
         }
 
