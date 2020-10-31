@@ -23,12 +23,13 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="newCommentTextBox" MinHeight="60" TextWrapping="Wrap">
-
-            </TextBox>
+            <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <TextBox  x:Name="newCommentTextBox" MinHeight="60" TextWrapping="Wrap">
+                </TextBox>
+            </GroupBox>
+            
+           
             <Button Name="bComment" Grid.Column="1" Grid.Row="1" Margin="0 0 50 0" HorizontalAlignment="Right" Background="White" BorderBrush="White" FontSize="16" Click="bComment_Click" >Comment
-            </Button>
-            <Button Name="bBack" Grid.Column="0" Grid.Row="1" Margin="5 0 0 0" HorizontalAlignment="Left" Background="White" BorderBrush="White" FontSize="16" Click="bBack_Click" >Back
             </Button>
         </Grid>
 

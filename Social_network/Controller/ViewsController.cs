@@ -24,6 +24,7 @@ namespace Social_network.Controller
             MainUser mainUser = new MainUser(user);
             mainUser.Show();
             loginWindow.Owner = mainUser;
+           
             loginWindow.Close();
         }
         internal static void IncorrectLogin(MainWindow loginWindow)
@@ -49,6 +50,16 @@ namespace Social_network.Controller
         {
             mainUser.mainPage.Navigate(new FollowersPage(mainUser.User));
         }
+
+        internal static void LogOut(MainUser mainUser)
+        {
+            
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            mainUser.Owner = mainWindow;
+            mainUser.Close();
+        }
+
         internal static void CancelRegistration(SingUpUser singUpUser)
         {
             MainWindow loginWindow = new MainWindow();
@@ -69,13 +80,13 @@ namespace Social_network.Controller
             parent.mainPage.Navigate(new UserPageStream(user));
         }
 
-        internal static void ShowScrollFollowingContent(FollowersPage followersPage)
+        internal static void ShowScrollFollowersContent(FollowersPage followersPage)
         {
             followersPage.mainStackFollowers.Children.Clear();
             for (int i = 0; i < followersPage.followersStreamList.Count; i++)
             {
                 StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
-                var bViewUser = new Button() { MinWidth = 130, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.Wheat), FontSize = 20, Margin = new System.Windows.Thickness(20, 20, 0, 20), Content = "View user", Tag = i };
+                var bViewUser = new Button() { MinWidth = 130, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.Wheat), Foreground = new SolidColorBrush(Colors.Purple), FontSize = 20, Margin = new System.Windows.Thickness(20, 20, 0, 20), Content = "View user", Tag = i };
                 bViewUser.Click += new RoutedEventHandler(followersPage.bViewUser_Click);
                 stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = followersPage.followersStreamList[i].FirstName });
                 stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = followersPage.followersStreamList[i].SecondName });
@@ -103,7 +114,7 @@ namespace Social_network.Controller
             for (int i = 0; i < followingPage.followingStreamList.Count; i++)
             {
                 StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
-                var bViewUser = new Button() { MinWidth = 130, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.Wheat), FontSize = 20, Margin = new System.Windows.Thickness(20, 20, 0, 20), Content = "View user", Tag = i };
+                var bViewUser = new Button() { MinWidth = 130, Background = new SolidColorBrush(Colors.White), Foreground = new SolidColorBrush(Colors.Purple), BorderBrush = new SolidColorBrush(Colors.Wheat), FontSize = 20, Margin = new System.Windows.Thickness(20, 20, 0, 20), Content = "View user", Tag = i };
                 bViewUser.Click += new RoutedEventHandler(followingPage.bViewUser_Click);
                 stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = followingPage.followingStreamList[i].FirstName });
                 stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = followingPage.followingStreamList[i].SecondName });
@@ -162,52 +173,60 @@ namespace Social_network.Controller
             userPageStream.blockEmail.Text = userPageStream.User.Email;
             userPageStream.blockInterests.Text = String.Join(", ",userPageStream.User.Interests);
             var parent = GetParentWindow(userPageStream);
-            if ((parent.User.Following.Contains(userPageStream.User.Id)) &&(parent.User.Followers.Contains(userPageStream.User.Id)))
+            if (parent.User.Id == userPageStream.User.Id)
             {
-                userPageStream.bFollow.Tag = 2;
-                userPageStream.bFollow.Content = "Following";
-                
+                userPageStream.bFollow.Tag = 3;
+                userPageStream.bFollow.Content = "It's you";
             }
-            else if (parent.User.Followers.Contains(userPageStream.User.Id))
+            else
+            {
+                if ((parent.User.Following.Contains(userPageStream.User.Id)) && (parent.User.Followers.Contains(userPageStream.User.Id)))
+                {
+                    userPageStream.bFollow.Tag = 2;
+                    userPageStream.bFollow.Content = "Following";
+
+                }
+                else if (parent.User.Followers.Contains(userPageStream.User.Id))
                 {
                     userPageStream.bFollow.Tag = 1;
                     userPageStream.bFollow.Content = "Follow Back";
                 }
-            else if (parent.User.Following.Contains(userPageStream.User.Id))
+                else if (parent.User.Following.Contains(userPageStream.User.Id))
                 {
                     userPageStream.bFollow.Tag = -1;
                     userPageStream.bFollow.Content = "Following";
                 }
-            else
+                else
                 {
                     userPageStream.bFollow.Tag = -2;
                     userPageStream.bFollow.Content = "Follow";
                 }
-               
-            
-            for (int i = 0; i < userPageStream.postsStreamList.Count; i++)
-            {
-
-                StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Vertical };
-                stackPanel.Children.Add(new TextBlock() { Text = userPageStream.User.FirstName + " " + userPageStream.User.SecondName });
-                var postContent = new TextBlock() { TextWrapping = System.Windows.TextWrapping.Wrap, Margin = new System.Windows.Thickness(0, 5, 0, 0), MaxHeight = 120, Width = 500, Text = userPageStream.postsStreamList[i].PostsContent };
-                stackPanel.Children.Add(postContent);
-                Grid grid = new Grid();
-                var bLike = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = userPageStream.postsStreamList[i].Likers.Count + " Likes", Tag = i };
-                var bMore = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "More", Tag = i };
-                var bComment = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Comment", Tag = i };
-                bComment.Click += new RoutedEventHandler(userPageStream.BComment_Click);
-                bLike.Click += new RoutedEventHandler(userPageStream.BLike_Click);
-                bMore.Click += new RoutedEventHandler(userPageStream.BMore_Click);
-                grid.Children.Add(bLike);
-                grid.Children.Add(bMore);
-                grid.Children.Add(bComment);
-                userPageStream.LikeButtonsList.Add(bLike);
-                userPageStream.PostsContentList.Add(postContent);
-                stackPanel.Children.Add(grid);
-                userPageStream.mainStackUserContent.Children.Add(stackPanel);
-
             }
+
+                for (int i = 0; i < userPageStream.postsStreamList.Count; i++)
+                {
+
+                    StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Vertical };
+                    stackPanel.Children.Add(new TextBlock() { Text = userPageStream.User.FirstName + " " + userPageStream.User.SecondName });
+                    var postContent = new TextBlock() { TextWrapping = System.Windows.TextWrapping.Wrap, Margin = new System.Windows.Thickness(0, 5, 0, 0), MaxHeight = 120, Width = 500, Text = userPageStream.postsStreamList[i].PostsContent };
+                    stackPanel.Children.Add(postContent);
+                    Grid grid = new Grid();
+                    var bLike = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Background = new SolidColorBrush(Colors.White), Foreground = new SolidColorBrush(Colors.Purple), BorderBrush = new SolidColorBrush(Colors.White), Content = userPageStream.postsStreamList[i].Likers.Count + " Likes", Tag = i };
+                    var bMore = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), Foreground = new SolidColorBrush(Colors.Purple), BorderBrush = new SolidColorBrush(Colors.White), Content = "More", Tag = i };
+                    var bComment = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Background = new SolidColorBrush(Colors.White), Foreground = new SolidColorBrush(Colors.Purple), BorderBrush = new SolidColorBrush(Colors.White), Content = "Comment", Tag = i };
+                    bComment.Click += new RoutedEventHandler(userPageStream.BComment_Click);
+                    bLike.Click += new RoutedEventHandler(userPageStream.BLike_Click);
+                    bMore.Click += new RoutedEventHandler(userPageStream.BMore_Click);
+                    grid.Children.Add(bLike);
+                    grid.Children.Add(bMore);
+                    grid.Children.Add(bComment);
+                    userPageStream.LikeButtonsList.Add(bLike);
+                    userPageStream.PostsContentList.Add(postContent);
+                    stackPanel.Children.Add(grid);
+                    userPageStream.mainStackUserContent.Children.Add(stackPanel);
+
+                }
+            
            
         }
 
@@ -238,6 +257,8 @@ namespace Social_network.Controller
         internal static void ShowScrollContent(ContentStream contentStream, List<string> headPosts)
         {
             contentStream.mainStackContent.Children.RemoveRange(1, contentStream.mainStackContent.Children.Count-1);
+            contentStream.LikeButtonsList.Clear();
+            contentStream.PostsContentList.Clear();
             for (int i =0; i < contentStream.postsStreamList.Count; i++)
             {
                 GroupBox groupBox = new GroupBox() { Margin = new System.Windows.Thickness(0, 10, 0, 10) };
@@ -246,15 +267,16 @@ namespace Social_network.Controller
                 stackPanel.Children.Add(new TextBlock() {Text = headPosts[i]});
                 stackPanel.Children.Add(postContent);
                 Grid grid = new Grid();
-                var bLike = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = contentStream.postsStreamList[i].Likers.Count + " Likes", Tag = i };
-                var bMore = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "More", Tag = i };
-                var bComment = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Comment", Tag = i };
+                var bLike = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Background = new SolidColorBrush(Colors.White), Foreground = new SolidColorBrush(Colors.Purple), BorderBrush = new SolidColorBrush(Colors.White), Content = contentStream.postsStreamList[i].Likers.Count + " Likes", Tag = i };
+                var bMore = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), Foreground = new SolidColorBrush(Colors.Purple), BorderBrush = new SolidColorBrush(Colors.White), Content = "More", Tag = i };
+                var bComment = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Background = new SolidColorBrush(Colors.White), Foreground = new SolidColorBrush(Colors.Purple), BorderBrush = new SolidColorBrush(Colors.White), Content = "Comment", Tag = i };
                 bComment.Click += new RoutedEventHandler(contentStream.BComment_Click);
                 bLike.Click += new RoutedEventHandler(contentStream.BLike_Click);
                 bMore.Click += new RoutedEventHandler(contentStream.BMore_Click);
                 grid.Children.Add(bLike);
                 grid.Children.Add(bMore);
                 grid.Children.Add(bComment);
+                
                 contentStream.LikeButtonsList.Add(bLike);
                 contentStream.PostsContentList.Add(postContent);
                 stackPanel.Children.Add(grid);
@@ -281,7 +303,7 @@ namespace Social_network.Controller
             for (int i =0; i< searchPage.usersStreamList.Count; i++)
             {
                 StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
-                var bViewUser = new Button() { MinWidth = 130, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.Wheat), FontSize = 20, Margin = new System.Windows.Thickness(20, 20, 0, 20), Content = "View user", Tag = i };
+                var bViewUser = new Button() { MinWidth = 130, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Foreground = new SolidColorBrush(Colors.Purple), FontSize = 20, Margin = new System.Windows.Thickness(20, 20, 0, 20), Content = "View user", Tag = i };
                 bViewUser.Click+= new RoutedEventHandler(searchPage.bViewUser_Click);
                 stackPanel.Children.Add(new TextBlock() {Height=30,HorizontalAlignment= HorizontalAlignment.Left, MinWidth = 170,FontSize = 20, Text = searchPage.usersStreamList[i].FirstName});
                 stackPanel.Children.Add(new TextBlock() { Height = 30, HorizontalAlignment = HorizontalAlignment.Left, MinWidth = 170, FontSize = 20, Text = searchPage.usersStreamList[i].SecondName });
@@ -299,13 +321,10 @@ namespace Social_network.Controller
             postCommentsStream.mainStackContent.Children.Clear();
             StackPanel stackPanelMain = new StackPanel() { Orientation = Orientation.Vertical };
             stackPanelMain.Children.Add(new TextBlock() { Text = userName });
-            stackPanelMain.Children.Add(new TextBlock() { TextWrapping = System.Windows.TextWrapping.Wrap, Margin = new System.Windows.Thickness(0, 5, 0, 0), MaxHeight = 120, Width = 700, Text = postCommentsStream.Post.PostsContent });
-            Grid gridMain = new Grid();
-            var bLike = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "Like" };
-            var bMore = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "More"}; ;
-            gridMain.Children.Add(bLike);
-            gridMain.Children.Add(bMore);
-            stackPanelMain.Children.Add(gridMain);
+            stackPanelMain.Children.Add(new TextBlock() { TextWrapping = System.Windows.TextWrapping.Wrap, Margin = new System.Windows.Thickness(0, 5, 0, 0), Width = 700, Text = postCommentsStream.Post.PostsContent });
+            
+            postCommentsStream.LikeButtonsList.Clear();
+            postCommentsStream.CommentsContentList.Clear();
             postCommentsStream.mainStackContent.Children.Add(stackPanelMain);
             for (int i =0; i< postCommentsStream.CommentsStreamList.Count; i++) ////continue;
             {
@@ -316,8 +335,8 @@ namespace Social_network.Controller
                 stackPanelComment.Children.Add(new TextBlock() {Margin = new Thickness(20,10,5,5) , Text = headComments[i] /*chi*/});
                 stackPanelComment.Children.Add(tempTextBlock);
                 Grid tempGridMain = new Grid();
-                var tempBMore = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = "More", Tag = i };
-                var tempBLike = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Content = postCommentsStream.CommentsStreamList[i].Likers.Count + " Likes", Tag = i };
+                var tempBMore = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Colors.White), Foreground = new SolidColorBrush(Colors.Purple), BorderBrush = new SolidColorBrush(Colors.White), Content = "More", Tag = i };
+                var tempBLike = new Button() { HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Background = new SolidColorBrush(Colors.White), BorderBrush = new SolidColorBrush(Colors.White), Foreground = new SolidColorBrush(Colors.Purple) , Content = postCommentsStream.CommentsStreamList[i].Likers.Count + " Likes", Tag = i };
                 tempBLike.Click += new RoutedEventHandler(postCommentsStream.BLike_Click);
                 tempBMore.Click += new RoutedEventHandler(postCommentsStream.BMore_Click);
                 postCommentsStream.LikeButtonsList.Add(tempBLike);
@@ -328,8 +347,6 @@ namespace Social_network.Controller
                 postCommentsStream.mainStackContent.Children.Add(groupBox);
             }
         }
-
- 
 
         internal static void ShowCommentsPage(ContentStream contentStream, Post post)
         {

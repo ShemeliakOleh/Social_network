@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainUser" Height="600" Width="1000"
         Loaded="Window_Loaded">
-    <Grid ShowGridLines="True">
+    <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition Width="10*" ></ColumnDefinition>
@@ -23,10 +23,12 @@
         
         </Frame>
         <StackPanel  Grid.Column="1" Orientation="Horizontal">
-            <Button Name="bSearch" HorizontalAlignment="Left" MinWidth="100" BorderBrush="White" Background="White" FontSize="20" Click="bSearch_Click">Search</Button>
-            <Button Name="bFollowing" HorizontalAlignment="Left" MinWidth="100" BorderBrush="White" Background="White" FontSize="20" Click="bFollowing_Click">Following</Button>
-            <Button Name="bFollowers" HorizontalAlignment="Left" MinWidth="100" BorderBrush="White" Background="White" FontSize="20" Click="bFollowers_Click">Followers</Button>
+            <Button Name="bStream" HorizontalAlignment="Left" MinWidth="100" Foreground="Purple" BorderBrush="White" Background="White" FontSize="20" Click="bStream_Click">Stream</Button>
+            <Button Name="bSearch" HorizontalAlignment="Left" MinWidth="100" Foreground="Purple" BorderBrush="White" Background="White" FontSize="20" Click="bSearch_Click">Search</Button>
+            <Button Name="bFollowing" HorizontalAlignment="Left" MinWidth="100" Foreground="Purple" BorderBrush="White" Background="White" FontSize="20" Click="bFollowing_Click">Following</Button>
+            <Button Name="bFollowers" HorizontalAlignment="Left" MinWidth="100" Foreground="Purple" BorderBrush="White" Background="White" FontSize="20" Click="bFollowers_Click">Followers</Button>
         </StackPanel>
+        <Button x:Name="bLogOut" Grid.Column="0" Foreground="DarkRed"  Grid.Row="2" FontSize="18" BorderBrush="White" Background="White" Click="bLogOut_Click">Log out</Button>
         
     </Grid>
 </Window>

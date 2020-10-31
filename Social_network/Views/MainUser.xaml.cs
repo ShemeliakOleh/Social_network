@@ -48,5 +48,15 @@ namespace Social_network.Views
         {
             ViewsController.ShowFollowersPage(this);
         }
+
+        private void bStream_Click(object sender, RoutedEventArgs e)
+        {
+            ViewsController.ShowPostsPage(this);
+        }
+
+        private void bLogOut_Click(object sender, RoutedEventArgs e)
+        {
+            ViewsController.LogOut(this);
+        }
     }
 }

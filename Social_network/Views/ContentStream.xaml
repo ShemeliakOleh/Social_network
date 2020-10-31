@@ -20,25 +20,10 @@
                     <TextBox x:Name="newPostTextBox" MinHeight="30" TextWrapping="Wrap">
 
                     </TextBox>
-                    <Button HorizontalAlignment="Right" Background="White" BorderBrush="White" Click="BCreatePost_Click">Create
+                    <Button HorizontalAlignment="Right" Foreground="Purple" Background="White" BorderBrush="White" Click="BCreatePost_Click">Create
                     </Button>
                 </StackPanel>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock>First_Name Second_Name</TextBlock>
-                    <TextBlock MaxHeight="120"  Margin="0 5 0 0" Width="700" TextWrapping="Wrap">Но активно развивающиеся страны третьего мира функционально разнесены на независимые элементы. Современные технологии достигли такого уровня, что внедрение современных методик предопределяет высокую востребованность модели развития. Ясность нашей позиции очевидна: выбранный нами инновационный путь позволяет выполнить важные задания по разработке своевременного выполнения сверхзадачи. Непосредственные участники технического прогресса указаны как претенденты на роль ключевых факторов. Каждый из нас понимает очевидную вещь: высококачественный прототип будущего проекта в значительной степени обусловливает важность новых предложений. Внезапно, активно развивающиеся страны третьего мира, инициированные исключительно синтетически, призваны к ответу. Безусловно, социально-экономическое развитие однозначно фиксирует необходимость первоочередных требований.
-                    </TextBlock>
-                    <Grid>
-                        <Button x:Name="bLike" HorizontalAlignment="Left" Background="White" BorderBrush="White" Click="BLike_Click">Like
-                        </Button>
-                        <Button x:Name="bMore" HorizontalAlignment="Center" Background="White" BorderBrush="White" Click="BMore_Click">More
-                        </Button>
-                        <Button Name="bComment" HorizontalAlignment="Right" Background="White" BorderBrush="White" Click="BComment_Click" >Comment
-                        </Button>
-                    </Grid>
-
-
-
-                </StackPanel>
+               
             </StackPanel>
         </ScrollViewer>
     </Grid>

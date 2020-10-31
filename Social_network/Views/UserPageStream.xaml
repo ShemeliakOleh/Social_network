@@ -35,7 +35,7 @@
             <TextBlock MinWidth="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" TextWrapping="Wrap"  FontSize="20">Interests:</TextBlock>
                         <TextBlock x:Name="blockInterests" TextWrapping="Wrap" MaxWidth="150" MinHeight="60" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10"  FontSize="14">Some text</TextBlock>
         </StackPanel>
-        <Button x:Name="bFollow" Grid.Column="3" Grid.Row="0" Background="White" BorderBrush="White" FontSize="20" Margin="30" Click="bFollow_Click">Follow</Button>
+        <Button x:Name="bFollow" Grid.Column="3" Grid.Row="0" Background="White" Foreground="Purple"  BorderBrush="Wheat" FontSize="20" Margin="30" Click="bFollow_Click">Follow</Button>
         
     </Grid>
             </StackPanel>

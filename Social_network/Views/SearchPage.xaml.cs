@@ -30,11 +30,6 @@ namespace Social_network.Views
             
         }
 
-        private void bBack_Click(object sender, RoutedEventArgs e)
-        {
-            ViewsController.ShowPostsPage(((MainUser)Window.GetWindow(this)));
-        }
-
         private void bSearch_Click(object sender, RoutedEventArgs e)
         {
             SocialDbController.UpdatePeopleScrollContent(this);

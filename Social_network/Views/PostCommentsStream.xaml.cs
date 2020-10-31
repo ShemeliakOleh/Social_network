@@ -39,12 +39,6 @@ namespace Social_network.Views
         {
             SocialDbController.CreateNewComment(this);
         }
-
-        private void bBack_Click(object sender, RoutedEventArgs e)
-        {
-
-            ViewsController.ShowPostsPage(((MainUser)Window.GetWindow(this)));
-        }
         internal void BMore_Click(object sender, RoutedEventArgs e)
         {
             int index = int.Parse(((Button)sender).Tag.ToString());

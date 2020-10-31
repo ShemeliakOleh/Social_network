@@ -13,6 +13,7 @@ namespace Social_network.Models
     {
         [BsonIgnoreIfDefault]
         [BsonId]
+        [BsonElement("_id")]
         public ObjectId Id { get; set; }
         [BsonElement("user")]
         public BsonObjectId User { get; set; }

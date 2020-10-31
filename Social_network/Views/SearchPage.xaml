@@ -22,9 +22,6 @@
 
         <TextBox  Name="userDataContent" FontSize="20" Grid.Row="0" Grid.Column="0" Margin="0 0 0 0" HorizontalAlignment="Center" MinWidth="300"> </TextBox>
         <Button x:Name="bSearch" Grid.Row="0" Grid.Column="1" Margin="20 0 0 0" MinWidth="100" Height="40" FontSize="22" Background="White" BorderBrush="White" HorizontalAlignment="Left" Click="bSearch_Click">Find</Button>
-        
-        <Button Name="bBack" Grid.Column="0" Grid.Row="2" Margin="5 0 0 0" HorizontalAlignment="Left" Background="White" BorderBrush="White" FontSize="16" Click="bBack_Click">Back
-        </Button>
         <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Hidden">
             <StackPanel Name="mainStackPeople">
                 

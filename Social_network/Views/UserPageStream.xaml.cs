@@ -65,7 +65,11 @@ namespace Social_network.Views
         private void bFollow_Click(object sender, RoutedEventArgs e)
         {
             int index = int.Parse(((Button)sender).Tag.ToString());
-            SocialDbController.ClickFollow(this,index);
+            if(index != 3)
+            {
+                SocialDbController.ClickFollow(this, index);
+            }
+           
         }
     }
 }

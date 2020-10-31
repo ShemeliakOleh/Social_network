@@ -62,7 +62,7 @@ namespace Social_network.Controller
 
 
             followersPage.followersStreamList = users;
-            ViewsController.ShowScrollFollowingContent(followersPage);
+            ViewsController.ShowScrollFollowersContent(followersPage);
         }
 
         internal static async void ClickView(FollowingPage followingPage, int index)
@@ -103,7 +103,8 @@ namespace Social_network.Controller
                     var filterFirstSurname = (Builders<BsonDocument>.Filter.Eq("firstName", Array[1]) & Builders<BsonDocument>.Filter.Eq("secondName", Array[0]));
                     var filter = (filterFirstName | filterFirstSurname);
                     var documentsList = await SortCollectionById("users", false, filter);
-
+                    //var parent = ViewsController.GetParentWindow(searchPage);
+                    //documentsList.Remove(parent.User.ToBsonDocument());
                     List<User> users = new List<User>();
                     for (int i = 0; i < documentsList.Count; i++)
                     {
@@ -118,6 +119,8 @@ namespace Social_network.Controller
                 {
                     var filter = (Builders<BsonDocument>.Filter.Eq("email", Array[0]) | Builders<BsonDocument>.Filter.Eq("secondName", Array[0]) | Builders<BsonDocument>.Filter.Eq("firstName", Array[0]));
                     var documentsList = await SortCollectionById("users", false, filter);
+                    //var parent = ViewsController.GetParentWindow(searchPage);
+                    //documentsList.Remove(parent.User.ToBsonDocument());
                     List<User> users = new List<User>();
                     for (int i = 0; i < documentsList.Count; i++)
                     {
@@ -139,8 +142,8 @@ namespace Social_network.Controller
             else
             {
                 var documentsList = await SortCollectionById("users", false);
-                var parent = ViewsController.GetParentWindow(searchPage);
-                documentsList.Remove(parent.User.ToBsonDocument());
+                //var parent = ViewsController.GetParentWindow(searchPage);
+                //documentsList.Remove(parent.User.ToBsonDocument());
                 List<User> users = new List<User>();
                 for (int i = 0; i < documentsList.Count; i++)
                 {
@@ -386,25 +389,7 @@ namespace Social_network.Controller
             ViewsController.ShowScrollContent(contentStream, headPosts);
         }
 
-        private static async Task<List<string>> GetHeadPosts(ContentStream contentStream)
-        {
-            var documentsList = await SortCollectionById("posts", false);
-            List<string> headPosts = new List<string>();
-            for (int i = 0; i < documentsList.Count; i++)
-            {
-
-                var filter = Builders<BsonDocument>.Filter.Eq("_id", documentsList[i]["user"]);
-
-                List<BsonDocument> userCursor = new List<BsonDocument>();
-                var User = await GetDocumentsList(filter, "users");
-                headPosts.Add(User[0]["firstName"].ToString() + " " + User[0]["secondName"].ToString());
-
-               
-            }
-            return headPosts;
-
-        }
-
+     
         internal static async void CreateNewComment(PostCommentsStream postCommentsStream)
         {
             if (postCommentsStream.newCommentTextBox.Text.Length > 0)
@@ -428,9 +413,6 @@ namespace Social_network.Controller
                 UpdateCommentsScrollContent(postCommentsStream);
             }
         }
-
-       
-
         internal static async void CreateNewPost(ContentStream contentStream)
 
         {
@@ -472,7 +454,73 @@ namespace Social_network.Controller
 
         }
 
-       
+        internal static async void RegisterUser(SingUpUser singUpUser)
+        {
+            string message = "";
+            if (!(singUpUser.tBoxRegFName.Text.Length > 1))
+            {
+
+                message = "First name must be more than one character";
+
+
+            }
+            if (!(singUpUser.tBoxRegSName.Text.Length > 1))
+            {
+
+                if (message == "") message = "Second name must be more than one character";
+            }
+            if (!(singUpUser.tBoxRegEmail.Text.Length > 1))
+            {
+
+                if (message == "") message = "E-mail must be more than one character";
+            }
+            if (!(singUpUser.tBoxRegPass.Text.Length > 1))
+            {
+
+                if (message == "") message = "Password must be more than one character";
+            }
+            if (message == "")
+            {
+                singUpUser.tBlockMessage.Text = "Please wait";
+                User user = new User()
+                {
+                    FirstName = singUpUser.tBoxRegFName.Text,
+                    SecondName = singUpUser.tBoxRegSName.Text,
+                    Email = singUpUser.tBoxRegEmail.Text,
+                    Password = singUpUser.tBoxRegPass.Text,
+
+                };
+
+                user.Interests = new List<string>(singUpUser.tBoxRegInterets.Text.Split(','));
+
+                var filter = new BsonDocument(new BsonDocument("email", user.Email));
+
+                List<BsonDocument> userCursor = await GetDocumentsList(filter, "users");
+
+                if (userCursor.Count > 0)
+                {
+
+                    singUpUser.tBlockMessage.Text = "User with this e-mail is already registered!";
+                }
+                else
+                {
+                    var collection = GetCollection("users");
+                    await collection.InsertOneAsync(user.ToBsonDocument());
+                    ViewsController.ShowLoginUser(singUpUser, user.Email, user.Password);
+                }
+
+
+            }
+            else
+            {
+                singUpUser.tBlockMessage.Text = message;
+            }
+
+
+
+
+        }
+
         private static async Task<List<BsonDocument>> GetDocumentsList ( FilterDefinition<BsonDocument> filter, string CollectionsName)
         {
             var collection = GetCollection(CollectionsName);
@@ -491,25 +539,7 @@ namespace Social_network.Controller
             return userCursor;
 
         }
-        private static async Task<List<BsonDocument>> GetDocumentsList(string CollectionsName)
-        {
 
-            var collection = GetCollection(CollectionsName);
-            List<BsonDocument> userCursor = new List<BsonDocument>();
-            using (var cursor = await collection.FindAsync(new BsonDocument()))
-            {
-                while (await cursor.MoveNextAsync())
-                {
-                    var users = cursor.Current;
-                    foreach (var doc in users)
-                    {
-                        userCursor.Add(doc);
-                    }
-                }
-            }
-            return userCursor;
-
-        }
         private static async Task<List<BsonDocument>> SortCollectionById(string collectionName, bool ascending)
         {
 
@@ -517,11 +547,11 @@ namespace Social_network.Controller
             List<BsonDocument> sortedCollection;
             if (ascending)
             {
-                sortedCollection = await collection.Find(new BsonDocument()).Sort("{_id:1}").Limit(15).ToListAsync();
+                sortedCollection = await collection.Find(new BsonDocument()).Sort("{_id:1}").ToListAsync();
             }
             else
             {
-                sortedCollection = await collection.Find(new BsonDocument()).Sort("{_id:-1}").Limit(15).ToListAsync();
+                sortedCollection = await collection.Find(new BsonDocument()).Sort("{_id:-1}").ToListAsync();
             }
             
             return sortedCollection;
@@ -533,83 +563,34 @@ namespace Social_network.Controller
             List<BsonDocument> sortedCollection;
             if (ascending)
             {
-                sortedCollection = await collection.Find(filter).Sort("{_id:1}").Limit(15).ToListAsync();
+                sortedCollection = await collection.Find(filter).Sort("{_id:1}").ToListAsync();
             }
             else
             {
-                sortedCollection = await collection.Find(filter).Sort("{_id:-1}").Limit(15).ToListAsync();
+                sortedCollection = await collection.Find(filter).Sort("{_id:-1}").ToListAsync();
             }
 
             return sortedCollection;
         }
-       
 
-        internal static async void RegisterUser(SingUpUser singUpUser)
+        private static async Task<List<string>> GetHeadPosts(ContentStream contentStream)
         {
-            string message = "";
-            if (!(singUpUser.tBoxRegFName.Text.Length > 1))
+            var documentsList = await SortCollectionById("posts", false);
+            List<string> headPosts = new List<string>();
+            for (int i = 0; i < documentsList.Count; i++)
             {
-                
-                message = "First name must be more than one character";
-                
 
-            }
-            if (!(singUpUser.tBoxRegSName.Text.Length > 1))
-            {
-                
-                if(message=="")message = "Second name must be more than one character";
-            }
-            if (!(singUpUser.tBoxRegEmail.Text.Length > 1))
-            {
-                
-                if(message=="")message = "E-mail must be more than one character";
-            }
-            if (!(singUpUser.tBoxRegPass.Text.Length > 1))
-            {
-                
-                if(message=="")message = "Password must be more than one character";
-            }
-            if (message == "") {
-                singUpUser.tBlockMessage.Text = "Please wait";
-                User user = new User()
-                {
-                    FirstName = singUpUser.tBoxRegFName.Text,
-                    SecondName = singUpUser.tBoxRegSName.Text,
-                    Email = singUpUser.tBoxRegEmail.Text,
-                    Password = singUpUser.tBoxRegPass.Text,
-                    
-                };
+                var filter = Builders<BsonDocument>.Filter.Eq("_id", documentsList[i]["user"]);
 
-                user.Interests = new List<string>(singUpUser.tBoxRegInterets.Text.Split(','));
-                    
-                var filter = new BsonDocument(new BsonDocument("email", user.Email));
-                
-                List<BsonDocument> userCursor = await GetDocumentsList(filter, "users");
-                
-                if (userCursor.Count > 0)
-                {
-
-                    singUpUser.tBlockMessage.Text = "User with this e-mail is already registered!";
-                }
-                else
-                {
-                    var collection = GetCollection("users");
-                    await collection.InsertOneAsync(user.ToBsonDocument());
-                    ViewsController.ShowLoginUser(singUpUser, user.Email,user.Password);
-                }
-               
-
-            }
-            else
-            {
-                singUpUser.tBlockMessage.Text = message;
-            }
+                List<BsonDocument> userCursor = new List<BsonDocument>();
+                var User = await GetDocumentsList(filter, "users");
+                headPosts.Add(User[0]["firstName"].ToString() + " " + User[0]["secondName"].ToString());
 
 
-          
+            }
+            return headPosts;
 
         }
-
         private static IMongoCollection<BsonDocument> GetCollection(string CollectionsName)
         {
             string connectionString = "mongodb://localhost";
