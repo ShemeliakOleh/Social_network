@@ -10,7 +10,7 @@
       Loaded="Page_Loaded">
 
     <Grid>
-        <ScrollViewer Background="White" >
+        <ScrollViewer Background="White" VerticalScrollBarVisibility="Hidden" >
             <StackPanel x:Name="mainStackContent">
                 <StackPanel>
                     <TextBlock HorizontalAlignment="Center" Text="New post" FontSize="13">

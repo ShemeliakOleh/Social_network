@@ -31,8 +31,8 @@
             <Button Name="bBack" Grid.Column="0" Grid.Row="1" Margin="5 0 0 0" HorizontalAlignment="Left" Background="White" BorderBrush="White" FontSize="16" Click="bBack_Click" >Back
             </Button>
         </Grid>
-        
-        <ScrollViewer >
+
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" >
             <StackPanel x:Name="mainStackContent">
                 
             </StackPanel>

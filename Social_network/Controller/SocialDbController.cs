@@ -14,6 +14,7 @@ using MongoDB.Bson.Serialization;
 using System.Windows.Media;
 using System.Windows.Data;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Social_network.Controller
 {
@@ -38,7 +39,6 @@ namespace Social_network.Controller
             }
 
         }
-
         internal static async void ClickComments(UserPageStream userPageStream, int index)
         {
             var filterForPosts = Builders<BsonDocument>.Filter.Eq("_id", userPageStream.postsStreamList[index].Id);
@@ -50,17 +50,78 @@ namespace Social_network.Controller
 
             ViewsController.ShowCommentsPage(userPageStream, post);
         }
-
-        internal static void ClickMore(UserPageStream userPageStream, int index)
+        internal static async void ClickLike(UserPageStream userPageStream, int index)
         {
-            throw new NotImplementedException();
+            
+
+
+            var filterUser = Builders<BsonDocument>.Filter.Eq("_id", userPageStream.postsStreamList[index].Id);
+            var collection = GetCollection("posts");
+            var parent = ViewsController.GetParentWindow(userPageStream);
+            if (userPageStream.postsStreamList[index].Likers.Contains(parent.User.Id))
+            {
+              
+                userPageStream.postsStreamList[index].Likers.Remove(parent.User.Id);
+                var update = Builders<BsonDocument>.Update.Pull("likers",parent.User.Id);
+                await collection.UpdateOneAsync(filterUser, update);
+            }
+            else
+            {
+                userPageStream.postsStreamList[index].Likers.Add(parent.User.Id);
+                var update = Builders<BsonDocument>.Update.Push("likers", parent.User.Id);
+                await collection.UpdateOneAsync(filterUser, update);
+            }
+
+
+            ViewsController.ShowUpdatedLike(userPageStream,index);
+            
+            
         }
 
-        
-
-        internal static void ClickLike(UserPageStream userPageStream, int index)
+        internal static async void ClickLike(PostCommentsStream postCommentsStream, int index)
         {
-            throw new NotImplementedException();
+            var filterUser = Builders<BsonDocument>.Filter.Eq("_id", postCommentsStream.CommentsStreamList[index].Id);
+            var collection = GetCollection("comments");
+            var parent = ViewsController.GetParentWindow(postCommentsStream);
+            if (postCommentsStream.CommentsStreamList[index].Likers.Contains(parent.User.Id))
+            {
+
+                postCommentsStream.CommentsStreamList[index].Likers.Remove(parent.User.Id);
+                var update = Builders<BsonDocument>.Update.Pull("likers", parent.User.Id);
+                await collection.UpdateOneAsync(filterUser, update);
+            }
+            else
+            {
+                postCommentsStream.CommentsStreamList[index].Likers.Add(parent.User.Id);
+                var update = Builders<BsonDocument>.Update.Push("likers", parent.User.Id);
+                await collection.UpdateOneAsync(filterUser, update);
+            }
+
+
+            ViewsController.ShowUpdatedLike(postCommentsStream, index);
+        }
+
+        internal static async void ClickLike(ContentStream contentStream, int index)
+        {
+            var filterUser = Builders<BsonDocument>.Filter.Eq("_id", contentStream.postsStreamList[index].Id);
+            var collection = GetCollection("posts");
+            var parent = ViewsController.GetParentWindow(contentStream);
+            if (contentStream.postsStreamList[index].Likers.Contains(parent.User.Id))
+            {
+
+                contentStream.postsStreamList[index].Likers.Remove(parent.User.Id);
+                var update = Builders<BsonDocument>.Update.Pull("likers", parent.User.Id);
+                await collection.UpdateOneAsync(filterUser, update);
+            }
+            else
+            {
+                contentStream.postsStreamList[index].Likers.Add(parent.User.Id);
+                var update = Builders<BsonDocument>.Update.Push("likers", parent.User.Id);
+                await collection.UpdateOneAsync(filterUser, update);
+            }
+
+
+            ViewsController.ShowUpdatedLike(contentStream,index);
         }
 
         internal static async void ClickFollow(UserPageStream userPageStream, int index)
@@ -126,16 +187,9 @@ namespace Social_network.Controller
         {
             var filterForComments = Builders<BsonDocument>.Filter.Eq("post", postCommentsStream.Post.Id);
             var filterForUsers = Builders<BsonDocument>.Filter.Eq("_id", postCommentsStream.Post.User);
-            //var commentsBson = await GetDocumentsList(filterForComments, "comments");
             var userAsList = await GetDocumentsList(filterForUsers, "users");
             var userName = userAsList[0]["firstName"] + " " + userAsList[0]["secondName"];
-            //var comments = new List<Comment>();
             List<ObjectId> CommetsIds = new List<ObjectId>();
-            //for(int i =0; i< commentsBson.Count; i++)
-            //{
-            //    comments.Add(BsonSerializer.Deserialize<Comment>(commentsBson[i]));
-            //    //CommetsIds.Add(comments[i].Id);
-            //}
             var documentsList = await SortCollectionById("comments", false, filterForComments);
             List<string> headComments = new List<string>();
             List<Comment> comments = new List<Comment>();
@@ -152,11 +206,8 @@ namespace Social_network.Controller
 
                 comments.Add(BsonSerializer.Deserialize<Comment>(documentsList[i]));
             }
-
-
-            //var filterUsersWithComments = new BsonDocument("_id", new BsonDocument("$in", new BsonArray(CommetsIds)));
-            //var UsersWithComments = await GetDocumentsList(filterUsersWithComments, "users");
-            ViewsController.ShowCommentsScrollContent(comments, userName, postCommentsStream, headComments);
+            postCommentsStream.CommentsStreamList = comments;
+            ViewsController.ShowCommentsScrollContent(userName, postCommentsStream, headComments);
 
 
 
@@ -207,12 +258,14 @@ namespace Social_network.Controller
                     var filterFirstSurname = (Builders<BsonDocument>.Filter.Eq("firstName", Array[1]) & Builders<BsonDocument>.Filter.Eq("secondName", Array[0]));
                     var filter = (filterFirstName | filterFirstSurname);
                     var documentsList = await SortCollectionById("users", false,filter);
+                    
                     List<User> users = new List<User>();
                     for (int i = 0; i < documentsList.Count; i++)
                     {
 
                         users.Add(BsonSerializer.Deserialize<User>(documentsList[i]));
                     }
+                    
                     searchPage.usersStreamList = users;
                     ViewsController.ShowScrollPeopleContent(searchPage);
                 }
@@ -226,11 +279,13 @@ namespace Social_network.Controller
 
                         users.Add(BsonSerializer.Deserialize<User>(documentsList[i]));
                     }
+                   
                     searchPage.usersStreamList = users;
                     ViewsController.ShowScrollPeopleContent(searchPage);
                 }
                 else
                 {
+
                     ViewsController.ShowScrollPeopleContent(searchPage);
                 }
 
@@ -239,12 +294,16 @@ namespace Social_network.Controller
             else
             {
                 var documentsList = await SortCollectionById("users", false);
+                var parent = ViewsController.GetParentWindow(searchPage);
+                documentsList.Remove(parent.User.ToBsonDocument());
                 List<User> users = new List<User>();
                 for (int i = 0; i < documentsList.Count; i++)
                 {
 
                     users.Add(BsonSerializer.Deserialize<User>(documentsList[i]));
                 }
+               
+                
                 searchPage.usersStreamList = users;
                 ViewsController.ShowScrollPeopleContent(searchPage);
             }
@@ -254,9 +313,30 @@ namespace Social_network.Controller
         {
 
             var documentsList = await SortCollectionById("posts", false);
-            List<string> headPosts = new List<string>();
             List<Post> posts = new List<Post>();
 
+            for (int i = 0; i < documentsList.Count; i++)
+            {
+
+                var filter = Builders<BsonDocument>.Filter.Eq("_id", documentsList[i]["user"]);
+
+                List<BsonDocument> userCursor = new List<BsonDocument>();
+                
+
+                posts.Add(BsonSerializer.Deserialize<Post>(documentsList[i]));
+            }
+
+
+
+            contentStream.postsStreamList = new List<Post>(posts);
+            var headPosts =await SocialDbController.GetHeadPosts(contentStream);
+            ViewsController.ShowScrollContent(contentStream, headPosts);
+        }
+
+        private static async Task<List<string>> GetHeadPosts(ContentStream contentStream)
+        {
+            var documentsList = await SortCollectionById("posts", false);
+            List<string> headPosts = new List<string>();
             for (int i = 0; i < documentsList.Count; i++)
             {
 
@@ -266,14 +346,12 @@ namespace Social_network.Controller
                 var User = await GetDocumentsList(filter, "users");
                 headPosts.Add(User[0]["firstName"].ToString() + " " + User[0]["secondName"].ToString());
 
-                posts.Add(BsonSerializer.Deserialize<Post>(documentsList[i]));
+               
             }
+            return headPosts;
 
-
-
-            contentStream.postsStreamList = new List<Post>(posts);
-            ViewsController.ShowScrollContent(contentStream, headPosts);
         }
+
         internal static async void CreateNewComment(PostCommentsStream postCommentsStream)
         {
             if (postCommentsStream.newCommentTextBox.Text.Length > 0)
@@ -340,18 +418,8 @@ namespace Social_network.Controller
             ViewsController.ShowCommentsPage(contentStream,post);
 
         }
-      
 
-        internal static void ClickMore(ContentStream contentStream, int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static void ClickLike(ContentStream contentStream, int index)
-        {
-            throw new NotImplementedException();
-        }
-
+       
         private static async Task<List<BsonDocument>> GetDocumentsList ( FilterDefinition<BsonDocument> filter, string CollectionsName)
         {
             var collection = GetCollection(CollectionsName);

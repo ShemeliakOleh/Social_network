@@ -10,7 +10,7 @@
       Loaded="Page_Loaded">
 
     <Grid Background="White">
-        <ScrollViewer>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
             <StackPanel x:Name="mainStackUserContent">
                 
            

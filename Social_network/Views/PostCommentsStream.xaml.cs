@@ -23,15 +23,16 @@ namespace Social_network.Views
     public partial class PostCommentsStream : Page
     {
         public Post Post { get; set; }
+        public List<Button> LikeButtonsList { get; set; }
+        public List<TextBlock> CommentsContentList { get; set; }
+        public List<Comment> CommentsStreamList { get; set; }
         public PostCommentsStream(Post post)
         {
-
-           
             this.Post = post;
             InitializeComponent();
-            
-            
-
+            LikeButtonsList = new List<Button>();
+            CommentsContentList = new List<TextBlock>();
+            CommentsStreamList = new List<Comment>();
         }
 
         private void bComment_Click(object sender, RoutedEventArgs e)
@@ -43,6 +44,17 @@ namespace Social_network.Views
         {
 
             ViewsController.ShowPostsPage(((MainUser)Window.GetWindow(this)));
+        }
+        internal void BMore_Click(object sender, RoutedEventArgs e)
+        {
+            int index = int.Parse(((Button)sender).Tag.ToString());
+            ViewsController.ShowUpdatedBMore(this, index);
+        }
+
+        internal void BLike_Click(object sender, RoutedEventArgs e)
+        {
+            int index = int.Parse(((Button)sender).Tag.ToString());
+            SocialDbController.ClickLike(this, index);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

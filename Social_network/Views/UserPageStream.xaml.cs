@@ -24,12 +24,18 @@ namespace Social_network.Views
     {
         public List<Post> postsStreamList { get; set; }
         public User User { get; set; }
+        public List<Button> LikeButtonsList { get; set; }
+        public List<TextBlock> PostsContentList { get; set; }
+        
+
         public UserPageStream(User user)
         {
             postsStreamList = new List<Post>();
             this.User = user;
             InitializeComponent();
-            
+            LikeButtonsList = new List<Button>();
+            PostsContentList = new List<TextBlock>();
+
         }
         internal void BComment_Click(object sender, RoutedEventArgs e)
         {
@@ -42,7 +48,7 @@ namespace Social_network.Views
         internal void BMore_Click(object sender, RoutedEventArgs e)
         {
             int index = int.Parse(((Button)sender).Tag.ToString());
-            SocialDbController.ClickMore(this, index);
+            ViewsController.ShowUpdatedBMore(this, index);
         }
 
         internal void BLike_Click(object sender, RoutedEventArgs e)
