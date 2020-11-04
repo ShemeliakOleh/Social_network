@@ -37,6 +37,7 @@ namespace Social_network.Controller
             mainUser.mainPage.Navigate(new ContentStream(mainUser.User));
         }
 
+
         internal static void ShowSearchPage(MainUser mainUser)
         {
             mainUser.mainPage.Navigate(new SearchPage());
