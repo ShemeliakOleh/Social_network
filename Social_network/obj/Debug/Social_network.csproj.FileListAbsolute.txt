@@ -47,3 +47,12 @@ C:\Users\Администратор\source\repos\Social_network\Social_network\S
 C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Views\FollowingPage.baml
 C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Views\FollowersPage.g.cs
 C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\obj\Debug\Views\FollowersPage.baml
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\bin\Debug\Neo4j.Driver.dll
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\bin\Debug\Neo4jClient.dll
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\bin\Debug\System.ValueTuple.dll
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\bin\Debug\Neo4j.Driver.xml
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\bin\Debug\Neo4jClient.pdb
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\bin\Debug\Neo4jClient.xml
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Администратор\source\repos\Social_network\Social_network\Social_network\bin\Debug\System.ValueTuple.xml

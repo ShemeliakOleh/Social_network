@@ -18,7 +18,7 @@ using System.Windows.Controls;
 
 namespace Social_network.Controller
 {
-   public static class SocialDbController
+   public static class MongoDbController
     {
         public static async void LoginUser(string email, string password, MainWindow loginWindow)
         {
@@ -385,7 +385,7 @@ namespace Social_network.Controller
 
 
             contentStream.postsStreamList = new List<Post>(posts);
-            var headPosts =await SocialDbController.GetHeadPosts(contentStream);
+            var headPosts =await MongoDbController.GetHeadPosts(contentStream);
             ViewsController.ShowScrollContent(contentStream, headPosts);
         }
 

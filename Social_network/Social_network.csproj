@@ -156,8 +156,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Neo4JLayer\Controller\SocialDbController.cs" />
-    <Compile Include="Neo4JLayer\Models\User.cs" />
+    <Compile Include="Controller\Neo4JLayer\Neo4JController.cs" />
+    <Compile Include="Controller\Neo4JLayer\Models\User.cs" />
+    <Compile Include="Controller\SocialDbController.cs" />
     <Compile Include="ViewController\ViewsController.cs" />
     <Compile Include="Views\ContentStream.xaml.cs">
       <DependentUpon>ContentStream.xaml</DependentUpon>
@@ -191,7 +192,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MongoDBLayer\Controller\SocialDbController.cs" />
+    <Compile Include="Controller\MongoDBLayer\MongoDbController.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -230,9 +231,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MongoDBLayer\Models\Comment.cs" />
-    <Compile Include="MongoDBLayer\Models\Post.cs" />
-    <Compile Include="MongoDBLayer\Models\User.cs" />
+    <Compile Include="Controller\MongoDBLayer\Models\Comment.cs" />
+    <Compile Include="Controller\MongoDBLayer\Models\Post.cs" />
+    <Compile Include="Controller\MongoDBLayer\Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
