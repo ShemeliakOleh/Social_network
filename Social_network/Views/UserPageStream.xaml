@@ -36,7 +36,7 @@
                         <TextBlock x:Name="blockInterests" TextWrapping="Wrap" MaxWidth="150" MinHeight="60" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10"  FontSize="14">Some text</TextBlock>
         </StackPanel>
         <Button x:Name="bFollow" Grid.Column="3" Grid.Row="0" Background="White" Foreground="Purple"  BorderBrush="Wheat" FontSize="20" Margin="30" Click="bFollow_Click">Follow</Button>
-        
+        <TextBlock x:Name="TextDistance" Text="Distance: " Grid.Column="3" Grid.Row="0" VerticalAlignment="Bottom" Margin="10" HorizontalAlignment="Center" MinHeight="20" MinWidth="50"></TextBlock>
     </Grid>
             </StackPanel>
         </ScrollViewer>

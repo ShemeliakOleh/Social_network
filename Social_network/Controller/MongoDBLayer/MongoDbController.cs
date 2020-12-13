@@ -454,69 +454,35 @@ namespace Social_network.Controller
 
         }
 
-        internal static async void RegisterUser(SingUpUser singUpUser)
+        internal static async Task<bool> RegisterUser(SingUpUser singUpUser)
         {
-            string message = "";
-            if (!(singUpUser.tBoxRegFName.Text.Length > 1))
+            singUpUser.tBlockMessage.Text = "Please wait";
+            User user = new User()
             {
+                FirstName = singUpUser.tBoxRegFName.Text,
+                SecondName = singUpUser.tBoxRegSName.Text,
+                Email = singUpUser.tBoxRegEmail.Text,
+                Password = singUpUser.tBoxRegPass.Text,
 
-                message = "First name must be more than one character";
+            };
 
+            user.Interests = new List<string>(singUpUser.tBoxRegInterets.Text.Split(','));
 
-            }
-            if (!(singUpUser.tBoxRegSName.Text.Length > 1))
+            var filter = new BsonDocument(new BsonDocument("email", user.Email));
+
+            List<BsonDocument> userCursor = await GetDocumentsList(filter, "users");
+
+            if (userCursor.Count > 0)
             {
-
-                if (message == "") message = "Second name must be more than one character";
-            }
-            if (!(singUpUser.tBoxRegEmail.Text.Length > 1))
-            {
-
-                if (message == "") message = "E-mail must be more than one character";
-            }
-            if (!(singUpUser.tBoxRegPass.Text.Length > 1))
-            {
-
-                if (message == "") message = "Password must be more than one character";
-            }
-            if (message == "")
-            {
-                singUpUser.tBlockMessage.Text = "Please wait";
-                User user = new User()
-                {
-                    FirstName = singUpUser.tBoxRegFName.Text,
-                    SecondName = singUpUser.tBoxRegSName.Text,
-                    Email = singUpUser.tBoxRegEmail.Text,
-                    Password = singUpUser.tBoxRegPass.Text,
-
-                };
-
-                user.Interests = new List<string>(singUpUser.tBoxRegInterets.Text.Split(','));
-
-                var filter = new BsonDocument(new BsonDocument("email", user.Email));
-
-                List<BsonDocument> userCursor = await GetDocumentsList(filter, "users");
-
-                if (userCursor.Count > 0)
-                {
-
-                    singUpUser.tBlockMessage.Text = "User with this e-mail is already registered!";
-                }
-                else
-                {
-                    var collection = GetCollection("users");
-                    await collection.InsertOneAsync(user.ToBsonDocument());
-                    ViewsController.ShowLoginUser(singUpUser, user.Email, user.Password);
-                }
-
-
+                return false;
             }
             else
             {
-                singUpUser.tBlockMessage.Text = message;
+                var collection = GetCollection("users");
+                await collection.InsertOneAsync(user.ToBsonDocument());
+                ViewsController.ShowLoginUser(singUpUser, user.Email, user.Password);
+                return true;
             }
-
-
 
 
         }

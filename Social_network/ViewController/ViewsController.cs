@@ -69,6 +69,19 @@ namespace Social_network.Controller
             singUpUser.Close();
         }
 
+        internal static void ShowDistance(UserPageStream userPageStream, int distance)
+        {
+            if (distance >= 0)
+            {
+                userPageStream.TextDistance.Text = "Distance: " + distance;
+            }
+            else
+            {
+                userPageStream.TextDistance.Text = "Distance: no connections";
+            }
+
+        }
+
         internal static void ShowUserPage(FollowersPage followersPage, User user)
         {
             var parent = GetParentWindow(followersPage);

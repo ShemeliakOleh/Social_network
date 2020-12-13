@@ -1,12 +1,12 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using Social_network.Neo4JLayer.Neo4JController;
 using Social_network.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Social_network.Controller
 {
     class SocialDbController
@@ -66,6 +66,7 @@ namespace Social_network.Controller
         internal static void ClickFollow(UserPageStream userPageStream, int index)
         {
             MongoDbController.ClickFollow(userPageStream, index);
+            Neo4JController.ClickFollow(userPageStream, index);
         }
 
         internal static void UpdateCommentsScrollContent(PostCommentsStream postCommentsStream)
@@ -75,11 +76,13 @@ namespace Social_network.Controller
         internal static void UpdateUserPostsScrollContent(UserPageStream userPageStream)
         {
             MongoDbController.UpdateUserPostsScrollContent(userPageStream);
+            
+            Neo4JController.GetDistance(userPageStream);
         }
 
         internal static void ClickView(SearchPage searchPage, int index)
         {
-            MongoDbController.ClickView(searchPage, index);
+           MongoDbController.ClickView(searchPage, index);
         }
 
 
@@ -102,9 +105,50 @@ namespace Social_network.Controller
             MongoDbController.ClickComments(contentStream, index);
         }
 
-        internal static void RegisterUser(SingUpUser singUpUser)
+        internal static async void RegisterUser(SingUpUser singUpUser)
         {
-            MongoDbController.RegisterUser(singUpUser);
+            string message = "";
+            if (!(singUpUser.tBoxRegFName.Text.Length > 1))
+            {
+
+                message = "First name must be more than one character";
+
+
+            }
+            if (!(singUpUser.tBoxRegSName.Text.Length > 1))
+            {
+
+                if (message == "") message = "Second name must be more than one character";
+            }
+            if (!(singUpUser.tBoxRegEmail.Text.Length > 1))
+            {
+
+                if (message == "") message = "E-mail must be more than one character";
+            }
+            if (!(singUpUser.tBoxRegPass.Text.Length > 1))
+            {
+
+                if (message == "") message = "Password must be more than one character";
+            }
+            if (message == "")
+            {
+                singUpUser.tBlockMessage.Text = "Please wait";
+                if (await MongoDbController.RegisterUser(singUpUser))
+                {
+                    Neo4JController.RegisterUser(singUpUser);
+                }
+                else
+                {
+                    singUpUser.tBlockMessage.Text = "User with this e-mail is already registered!";
+                }
+                
+
+            }
+            else
+            {
+                singUpUser.tBlockMessage.Text = message;
+            }
+            
         }
 
     }

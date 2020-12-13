@@ -29,6 +29,7 @@ namespace Social_network.Views
         {
 
              SocialDbController.RegisterUser(this);
+             
         }
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
